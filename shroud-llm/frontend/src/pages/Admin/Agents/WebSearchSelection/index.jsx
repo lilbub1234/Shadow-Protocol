@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Admin from "@/models/admin";
-import AnythingLLMIcon from "@/media/logo/anything-llm-icon.png";
+import AnythingLLMIcon from "@/media/logo/shroud-llm-icon.png";
 import GoogleSearchIcon from "./icons/google.png";
 import SearchApiIcon from "./icons/searchapi.png";
 import SerperDotDevIcon from "./icons/serper.png";
