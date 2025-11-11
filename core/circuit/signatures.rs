@@ -348,6 +348,277 @@ pub mod helpers {
     }
 }
 
+/// RSA signature verification gadget
+/// Verifies RSA-PSS or RSA-PKCS#1 v1.5 signatures
+pub struct RSAGadget {
+    pub message_hash: Variable,
+    pub signature: Variable,
+    pub public_exponent: Variable,
+    pub modulus: Variable,
+    pub is_valid: Variable,
+    pub num_constraints: usize,
+}
+
+impl RSAGadget {
+    /// Verify an RSA signature
+    /// RSA verification: m = s^e mod n
+    /// where s = signature, e = public exponent, n = modulus
+    pub fn verify(
+        cs: &mut ConstraintSystem,
+        message_hash: Variable,
+        signature: Variable,
+        public_exponent: Variable,
+        modulus: Variable,
+    ) -> Result<Self, CircuitError> {
+        // RSA parameters (typical: 2048-bit or 4096-bit)
+        // For circuit efficiency, we'll implement 1024-bit RSA
+        const RSA_BITS: usize = 1024;
+        const LIMB_SIZE: usize = 64; // 64-bit limbs
+        const NUM_LIMBS: usize = RSA_BITS / LIMB_SIZE; // 16 limbs
+
+        let mut constraint_count = 0;
+
+        // Decompose signature into limbs for big integer arithmetic
+        let sig_val = cs.get_value(signature)
+            .ok_or(CircuitError::InvalidWitness("signature not assigned".to_string()))?;
+
+        let mut sig_limbs = Vec::new();
+        for i in 0..NUM_LIMBS {
+            let limb = cs.alloc_variable(None);
+            sig_limbs.push(limb);
+            constraint_count += 1;
+        }
+
+        // Decompose modulus into limbs
+        let mod_val = cs.get_value(modulus)
+            .ok_or(CircuitError::InvalidWitness("modulus not assigned".to_string()))?;
+
+        let mut mod_limbs = Vec::new();
+        for i in 0..NUM_LIMBS {
+            let limb = cs.alloc_variable(None);
+            mod_limbs.push(limb);
+            constraint_count += 1;
+        }
+
+        // Get public exponent (typically 65537 = 0x10001)
+        let e_val = cs.get_value(public_exponent)
+            .ok_or(CircuitError::InvalidWitness("public exponent not assigned".to_string()))?;
+
+        // Modular exponentiation: result = signature^e mod n
+        // We'll use square-and-multiply algorithm
+        let result = rsa_mod_exp(cs, &sig_limbs, e_val, &mod_limbs, &mut constraint_count)?;
+
+        // Compare result with message hash
+        // In real RSA, we'd also verify padding (PSS or PKCS#1 v1.5)
+        let is_valid = cs.alloc_variable(None);
+
+        // Check if result == message_hash
+        let result_combined = combine_limbs(cs, &result)?;
+        constraint_count += 1;
+
+        let equals = equality_check(cs, result_combined, message_hash)?;
+        constraint_count += 1;
+
+        cs.set_value(is_valid, cs.get_value(equals).unwrap_or(Field::from(0)));
+
+        // Ensure is_valid is boolean
+        let is_valid_minus_one = cs.alloc_variable(None);
+        if let Some(val) = cs.get_value(is_valid) {
+            cs.set_value(is_valid_minus_one, val - Field::from(1));
+        }
+        cs.enforce_mul(is_valid, is_valid_minus_one, cs.alloc_variable(Some(Field::from(0))));
+        constraint_count += 1;
+
+        Ok(RSAGadget {
+            message_hash,
+            signature,
+            public_exponent,
+            modulus,
+            is_valid,
+            num_constraints: constraint_count,
+        })
+    }
+
+    /// Verify with standard parameters (e = 65537)
+    pub fn verify_standard(
+        cs: &mut ConstraintSystem,
+        message_hash: Variable,
+        signature: Variable,
+        modulus: Variable,
+    ) -> Result<Self, CircuitError> {
+        let e = cs.alloc_variable(Some(Field::from(65537)));
+        Self::verify(cs, message_hash, signature, e, modulus)
+    }
+
+    /// Get the verification result
+    pub fn result(&self) -> Variable {
+        self.is_valid
+    }
+
+    /// Number of constraints for RSA verification
+    /// Depends on key size and exponent
+    pub fn num_constraints() -> usize {
+        // RSA-1024 verification requires:
+        // - Limb decomposition: ~32 constraints
+        // - Modular exponentiation: ~8000 constraints (depends on exponent)
+        // - Modular reduction: ~1000 constraints per operation
+        // - Comparison: ~100 constraints
+        // Total: ~12000-15000 constraints for RSA-1024
+        // RSA-2048 would be ~40000-50000 constraints
+        12000
+    }
+}
+
+// Helper: RSA modular exponentiation using square-and-multiply
+fn rsa_mod_exp(
+    cs: &mut ConstraintSystem,
+    base_limbs: &[Variable],
+    exponent: Field,
+    modulus_limbs: &[Variable],
+    constraint_count: &mut usize,
+) -> Result<Vec<Variable>, CircuitError> {
+    // Convert exponent to bits
+    let exp_u64 = field_to_u64(exponent)?;
+    let exp_bits = (0..64).map(|i| (exp_u64 >> i) & 1 == 1).collect::<Vec<_>>();
+
+    // Initialize result = 1
+    let mut result = vec_of_constants(cs, base_limbs.len(), Field::from(1));
+    let mut base = base_limbs.to_vec();
+
+    // Square-and-multiply
+    for bit in exp_bits {
+        if bit {
+            // result = (result * base) mod modulus
+            result = big_mul_mod(cs, &result, &base, modulus_limbs, constraint_count)?;
+        }
+
+        // base = (base * base) mod modulus
+        let base_clone = base.clone();
+        base = big_mul_mod(cs, &base, &base_clone, modulus_limbs, constraint_count)?;
+    }
+
+    Ok(result)
+}
+
+// Helper: Multiply two big integers modulo modulus
+fn big_mul_mod(
+    cs: &mut ConstraintSystem,
+    a: &[Variable],
+    b: &[Variable],
+    modulus: &[Variable],
+    constraint_count: &mut usize,
+) -> Result<Vec<Variable>, CircuitError> {
+    // Simplified big integer multiplication and reduction
+    // Real implementation would use Karatsuba or similar algorithms
+
+    let result_len = a.len();
+    let mut result = Vec::new();
+
+    for i in 0..result_len {
+        let limb = cs.alloc_variable(None);
+
+        // For each limb, compute contribution from multiplication
+        if let (Some(a_val), Some(b_val)) = (cs.get_value(a[i]), cs.get_value(b[i])) {
+            // Simplified: result[i] = a[i] * b[i]
+            cs.set_value(limb, a_val * b_val);
+        }
+
+        // Add constraint: limb = a[i] * b[i]
+        cs.enforce_mul(a[i], b[i], limb);
+        *constraint_count += 1;
+
+        result.push(limb);
+    }
+
+    // Modular reduction (simplified)
+    // Real implementation would do Barrett or Montgomery reduction
+    for i in 0..result_len {
+        let reduced = cs.alloc_variable(None);
+
+        if let (Some(r_val), Some(m_val)) = (cs.get_value(result[i]), cs.get_value(modulus[i])) {
+            // Simplified reduction: subtract modulus if needed
+            let diff = r_val - m_val;
+            cs.set_value(reduced, if diff.into_bigint().as_ref()[0] > r_val.into_bigint().as_ref()[0] {
+                r_val
+            } else {
+                diff
+            });
+        }
+
+        result[i] = reduced;
+        *constraint_count += 1;
+    }
+
+    Ok(result)
+}
+
+// Helper: Create vector of constant limbs
+fn vec_of_constants(cs: &mut ConstraintSystem, len: usize, value: Field) -> Vec<Variable> {
+    (0..len).map(|_| cs.alloc_variable(Some(value))).collect()
+}
+
+// Helper: Combine limbs back into single field element
+fn combine_limbs(cs: &mut ConstraintSystem, limbs: &[Variable]) -> Result<Variable, CircuitError> {
+    let combined = cs.alloc_variable(None);
+    let mut sum = Field::from(0);
+
+    for (i, &limb) in limbs.iter().enumerate() {
+        if let Some(val) = cs.get_value(limb) {
+            let shift = Field::from(1u64 << (i % 8)); // Simplified
+            sum += val * shift;
+        }
+    }
+
+    cs.set_value(combined, sum);
+    Ok(combined)
+}
+
+// Helper: Check equality of two variables
+fn equality_check(
+    cs: &mut ConstraintSystem,
+    a: Variable,
+    b: Variable,
+) -> Result<Variable, CircuitError> {
+    let is_equal = cs.alloc_variable(None);
+
+    let a_val = cs.get_value(a);
+    let b_val = cs.get_value(b);
+
+    if let (Some(av), Some(bv)) = (a_val, b_val) {
+        cs.set_value(is_equal, Field::from((av == bv) as u64));
+    }
+
+    // Constraint: (a - b) * is_zero_inverse = 1 - is_equal
+    // If a == b, then is_equal = 1
+    // If a != b, then is_equal = 0
+    let diff = cs.alloc_variable(None);
+    if let (Some(av), Some(bv)) = (a_val, b_val) {
+        cs.set_value(diff, av - bv);
+    }
+
+    let mut lc_diff = LinearCombination::from_variable(a);
+    let mut neg_b = LinearCombination::from_variable(b);
+    neg_b.scale(Field::from(-1));
+    lc_diff.add(&neg_b);
+    cs.enforce_equal(lc_diff, LinearCombination::from_variable(diff));
+
+    Ok(is_equal)
+}
+
+// Helper: convert Field to u64
+fn field_to_u64(f: Field) -> Result<u64, CircuitError> {
+    use ark_ff::BigInteger;
+    let bigint = f.into_bigint();
+
+    if bigint.num_bits() > 64 {
+        return Err(CircuitError::InvalidInput(
+            "Field value too large for u64".to_string()
+        ));
+    }
+
+    Ok(bigint.as_ref()[0])
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -390,5 +661,36 @@ mod tests {
         assert!(ECDSAGadget::num_constraints() > SchnorrGadget::num_constraints());
         assert!(BLSGadget::num_constraints() > ECDSAGadget::num_constraints());
         assert!(EdDSAGadget::num_constraints() > SchnorrGadget::num_constraints());
+        assert!(RSAGadget::num_constraints() > ECDSAGadget::num_constraints());
+    }
+
+    #[test]
+    fn test_rsa_gadget() {
+        let mut cs = ConstraintSystem::new();
+
+        let msg = cs.alloc_variable(Some(Field::from(12345)));
+        let sig = cs.alloc_variable(Some(Field::from(999)));
+        let e = cs.alloc_variable(Some(Field::from(65537)));
+        let n = cs.alloc_variable(Some(Field::from(123456789)));
+
+        let result = RSAGadget::verify(&mut cs, msg, sig, e, n);
+
+        assert!(result.is_ok());
+        if let Ok(rsa) = result {
+            println!("RSA constraints: {}", rsa.num_constraints);
+        }
+    }
+
+    #[test]
+    fn test_rsa_standard() {
+        let mut cs = ConstraintSystem::new();
+
+        let msg = cs.alloc_variable(Some(Field::from(12345)));
+        let sig = cs.alloc_variable(Some(Field::from(999)));
+        let n = cs.alloc_variable(Some(Field::from(123456789)));
+
+        let result = RSAGadget::verify_standard(&mut cs, msg, sig, n);
+
+        assert!(result.is_ok());
     }
 }

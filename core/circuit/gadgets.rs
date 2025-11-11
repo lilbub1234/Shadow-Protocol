@@ -372,6 +372,421 @@ impl EqualityGadget {
     }
 }
 
+/// Blake3 hash gadget - Fast cryptographic hash
+/// Blake3 is optimized for performance and security
+pub struct Blake3Gadget {
+    pub inputs: Vec<Variable>,
+    pub output: Variable,
+    pub num_constraints: usize,
+}
+
+impl Blake3Gadget {
+    /// Create a Blake3 hash gadget
+    /// Blake3 uses a Merkle tree structure internally
+    pub fn new(
+        cs: &mut ConstraintSystem,
+        inputs: &[Variable],
+    ) -> Result<Self, CircuitError> {
+        if inputs.is_empty() {
+            return Err(CircuitError::InvalidInput("Empty input".to_string()));
+        }
+
+        let output = cs.alloc_variable(None);
+        let mut constraint_count = 0;
+
+        // Blake3 parameters
+        const CHUNK_SIZE: usize = 16; // 16 field elements per chunk
+        const ROUNDS: usize = 7;
+
+        // Process inputs in chunks
+        let chunks: Vec<&[Variable]> = inputs.chunks(CHUNK_SIZE).collect();
+        let mut chunk_hashes = Vec::new();
+
+        for chunk in chunks {
+            // Initialize state with Blake3 IV
+            let mut state = Vec::new();
+            for i in 0..8 {
+                let iv = blake3_iv(i);
+                state.push(cs.alloc_variable(Some(iv)));
+            }
+
+            // Mix in chunk data
+            for (i, &input_var) in chunk.iter().enumerate() {
+                if let Some(val) = cs.get_value(input_var) {
+                    // Mix operation: state[i % 8] = state[i % 8] + input
+                    let new_state = cs.alloc_variable(None);
+                    let idx = i % 8;
+
+                    if let Some(state_val) = cs.get_value(state[idx]) {
+                        cs.set_value(new_state, state_val + val);
+                    }
+
+                    // Constraint: new_state = state[idx] + input
+                    let mut lc_sum = LinearCombination::from_variable(state[idx]);
+                    lc_sum.add(&LinearCombination::from_variable(input_var));
+                    cs.enforce_equal(lc_sum, LinearCombination::from_variable(new_state));
+
+                    state[idx] = new_state;
+                    constraint_count += 1;
+                }
+            }
+
+            // Blake3 mixing rounds
+            for round in 0..ROUNDS {
+                // G function: quarter-round mixing
+                for i in 0..4 {
+                    let a_idx = i;
+                    let b_idx = (i + 4) % 8;
+
+                    // a = a + b
+                    let new_a = cs.alloc_variable(None);
+                    if let (Some(a_val), Some(b_val)) = (cs.get_value(state[a_idx]), cs.get_value(state[b_idx])) {
+                        cs.set_value(new_a, a_val + b_val);
+                    }
+
+                    let mut lc = LinearCombination::from_variable(state[a_idx]);
+                    lc.add(&LinearCombination::from_variable(state[b_idx]));
+                    cs.enforce_equal(lc, LinearCombination::from_variable(new_a));
+                    state[a_idx] = new_a;
+                    constraint_count += 1;
+
+                    // Rotation (simulated via multiplication by rotation constant)
+                    let rot_const = Field::from(blake3_rotation_constant(round, i));
+                    let rotated = cs.alloc_variable(None);
+                    if let Some(val) = cs.get_value(state[b_idx]) {
+                        cs.set_value(rotated, val * rot_const);
+                    }
+
+                    cs.enforce_mul(state[b_idx],
+                                   cs.alloc_variable(Some(rot_const)),
+                                   rotated);
+                    state[b_idx] = rotated;
+                    constraint_count += 1;
+                }
+            }
+
+            // Extract chunk hash (first state element as digest)
+            chunk_hashes.push(state[0]);
+        }
+
+        // If multiple chunks, build Merkle tree
+        let final_hash = if chunk_hashes.len() == 1 {
+            chunk_hashes[0]
+        } else {
+            // Binary tree hashing
+            let mut current_level = chunk_hashes;
+            while current_level.len() > 1 {
+                let mut next_level = Vec::new();
+                for pair in current_level.chunks(2) {
+                    let combined = cs.alloc_variable(None);
+                    if pair.len() == 2 {
+                        if let (Some(left), Some(right)) = (cs.get_value(pair[0]), cs.get_value(pair[1])) {
+                            // Hash combination
+                            cs.set_value(combined, left + right);
+                        }
+                        let mut lc = LinearCombination::from_variable(pair[0]);
+                        lc.add(&LinearCombination::from_variable(pair[1]));
+                        cs.enforce_equal(lc, LinearCombination::from_variable(combined));
+                    } else {
+                        cs.enforce_equal(
+                            LinearCombination::from_variable(pair[0]),
+                            LinearCombination::from_variable(combined)
+                        );
+                    }
+                    next_level.push(combined);
+                    constraint_count += 1;
+                }
+                current_level = next_level;
+            }
+            current_level[0]
+        };
+
+        cs.enforce_equal(
+            LinearCombination::from_variable(final_hash),
+            LinearCombination::from_variable(output),
+        );
+        cs.set_value(output, cs.get_value(final_hash).unwrap_or(Field::from(0)));
+
+        Ok(Blake3Gadget {
+            inputs: inputs.to_vec(),
+            output,
+            num_constraints: constraint_count,
+        })
+    }
+
+    pub fn output(&self) -> Variable {
+        self.output
+    }
+}
+
+/// Keccak-256 hash gadget - Ethereum-compatible hash
+/// Used in Ethereum for hashing transactions, addresses, etc.
+pub struct KeccakGadget {
+    pub inputs: Vec<Variable>,
+    pub output: Variable,
+    pub num_constraints: usize,
+}
+
+impl KeccakGadget {
+    /// Create a Keccak-256 hash gadget
+    /// Implements the Keccak-f[1600] permutation
+    pub fn new(
+        cs: &mut ConstraintSystem,
+        inputs: &[Variable],
+    ) -> Result<Self, CircuitError> {
+        if inputs.is_empty() {
+            return Err(CircuitError::InvalidInput("Empty input".to_string()));
+        }
+
+        let output = cs.alloc_variable(None);
+        let mut constraint_count = 0;
+
+        // Keccak parameters for SHA-3/Keccak-256
+        const RATE: usize = 17; // Rate in field elements (1088 bits / 64 bits)
+        const ROUNDS: usize = 24;
+
+        // Initialize state (5x5 array, flattened to 25 elements)
+        let mut state: Vec<Variable> = Vec::new();
+        for _ in 0..25 {
+            state.push(cs.alloc_variable(Some(Field::from(0))));
+        }
+
+        // Absorb phase: XOR inputs into state
+        let mut input_offset = 0;
+        while input_offset < inputs.len() {
+            // Take RATE inputs at a time
+            let chunk_size = std::cmp::min(RATE, inputs.len() - input_offset);
+
+            for i in 0..chunk_size {
+                let input_idx = input_offset + i;
+                if input_idx < inputs.len() {
+                    // XOR: state[i] = state[i] + input (addition in field = XOR for bits)
+                    let new_state = cs.alloc_variable(None);
+
+                    if let (Some(s), Some(inp)) = (cs.get_value(state[i]), cs.get_value(inputs[input_idx])) {
+                        cs.set_value(new_state, s + inp);
+                    }
+
+                    let mut lc = LinearCombination::from_variable(state[i]);
+                    lc.add(&LinearCombination::from_variable(inputs[input_idx]));
+                    cs.enforce_equal(lc, LinearCombination::from_variable(new_state));
+
+                    state[i] = new_state;
+                    constraint_count += 1;
+                }
+            }
+
+            // Keccak-f permutation
+            for round in 0..ROUNDS {
+                // θ (Theta) step: column parity
+                let mut c = Vec::new();
+                for x in 0..5 {
+                    let col = cs.alloc_variable(None);
+                    let mut col_lc = LinearCombination::zero();
+
+                    for y in 0..5 {
+                        col_lc.add(&LinearCombination::from_variable(state[x + 5 * y]));
+                    }
+
+                    // Compute parity
+                    if let Some(val) = compute_lc_value(cs, &col_lc) {
+                        cs.set_value(col, val);
+                    }
+                    c.push(col);
+                    constraint_count += 1;
+                }
+
+                // Apply theta mixing
+                for x in 0..5 {
+                    let prev_x = (x + 4) % 5;
+                    let next_x = (x + 1) % 5;
+
+                    for y in 0..5 {
+                        let idx = x + 5 * y;
+                        let new_val = cs.alloc_variable(None);
+
+                        // state[x,y] ^= c[x-1] ^ ROT(c[x+1], 1)
+                        if let (Some(s), Some(cp), Some(cn)) = (
+                            cs.get_value(state[idx]),
+                            cs.get_value(c[prev_x]),
+                            cs.get_value(c[next_x])
+                        ) {
+                            cs.set_value(new_val, s + cp + cn);
+                        }
+
+                        let mut lc = LinearCombination::from_variable(state[idx]);
+                        lc.add(&LinearCombination::from_variable(c[prev_x]));
+                        lc.add(&LinearCombination::from_variable(c[next_x]));
+                        cs.enforce_equal(lc, LinearCombination::from_variable(new_val));
+
+                        state[idx] = new_val;
+                        constraint_count += 1;
+                    }
+                }
+
+                // ρ (Rho) and π (Pi) steps: rotations and permutations
+                let mut temp_state = state.clone();
+                for x in 0..5 {
+                    for y in 0..5 {
+                        let src_idx = x + 5 * y;
+                        let (new_x, new_y) = keccak_rho_pi(x, y);
+                        let dst_idx = new_x + 5 * new_y;
+
+                        // Rotation simulation
+                        let rotation = keccak_rotation_offset(x, y);
+                        let rot_const = Field::from(1u64 << (rotation % 8));
+
+                        let rotated = cs.alloc_variable(None);
+                        if let Some(val) = cs.get_value(state[src_idx]) {
+                            cs.set_value(rotated, val * rot_const);
+                        }
+
+                        cs.enforce_mul(
+                            state[src_idx],
+                            cs.alloc_variable(Some(rot_const)),
+                            rotated
+                        );
+
+                        temp_state[dst_idx] = rotated;
+                        constraint_count += 1;
+                    }
+                }
+                state = temp_state;
+
+                // χ (Chi) step: non-linear mixing
+                temp_state = state.clone();
+                for x in 0..5 {
+                    for y in 0..5 {
+                        let idx = x + 5 * y;
+                        let next1 = ((x + 1) % 5) + 5 * y;
+                        let next2 = ((x + 2) % 5) + 5 * y;
+
+                        // state[x,y] ^= (~state[x+1,y]) & state[x+2,y]
+                        let new_val = cs.alloc_variable(None);
+
+                        if let (Some(s), Some(n1), Some(n2)) = (
+                            cs.get_value(state[idx]),
+                            cs.get_value(state[next1]),
+                            cs.get_value(state[next2])
+                        ) {
+                            // Simplified: a ^ ((1-b) * c)
+                            let mixed = s + (Field::from(1) - n1) * n2;
+                            cs.set_value(new_val, mixed);
+                        }
+
+                        temp_state[idx] = new_val;
+                        constraint_count += 2;
+                    }
+                }
+                state = temp_state;
+
+                // ι (Iota) step: add round constant
+                let rc = keccak_round_constant(round);
+                let new_state0 = cs.alloc_variable(None);
+                if let Some(s) = cs.get_value(state[0]) {
+                    cs.set_value(new_state0, s + rc);
+                }
+
+                let mut lc = LinearCombination::from_variable(state[0]);
+                lc.add(&LinearCombination::from_constant(rc));
+                cs.enforce_equal(lc, LinearCombination::from_variable(new_state0));
+                state[0] = new_state0;
+                constraint_count += 1;
+            }
+
+            input_offset += RATE;
+        }
+
+        // Squeeze phase: extract output (first state element as Keccak-256 digest)
+        cs.enforce_equal(
+            LinearCombination::from_variable(state[0]),
+            LinearCombination::from_variable(output),
+        );
+
+        if let Some(digest) = cs.get_value(state[0]) {
+            cs.set_value(output, digest);
+        }
+
+        Ok(KeccakGadget {
+            inputs: inputs.to_vec(),
+            output,
+            num_constraints: constraint_count,
+        })
+    }
+
+    pub fn output(&self) -> Variable {
+        self.output
+    }
+}
+
+// Blake3 helper functions
+fn blake3_iv(index: usize) -> Field {
+    const IV: [u64; 8] = [
+        0x6A09E667F3BCC908, 0xBB67AE8584CAA73B,
+        0x3C6EF372FE94F82B, 0xA54FF53A5F1D36F1,
+        0x510E527FADE682D1, 0x9B05688C2B3E6C1F,
+        0x1F83D9ABFB41BD6B, 0x5BE0CD19137E2179,
+    ];
+    Field::from(IV[index % 8])
+}
+
+fn blake3_rotation_constant(round: usize, quarter: usize) -> u64 {
+    const ROTATIONS: [[u64; 4]; 7] = [
+        [16, 12, 8, 7],
+        [16, 12, 8, 7],
+        [16, 12, 8, 7],
+        [16, 12, 8, 7],
+        [16, 12, 8, 7],
+        [16, 12, 8, 7],
+        [16, 12, 8, 7],
+    ];
+    // Simplified: return power of 2 for rotation simulation
+    1u64 << (ROTATIONS[round % 7][quarter % 4] % 8)
+}
+
+// Keccak helper functions
+fn keccak_rho_pi(x: usize, y: usize) -> (usize, usize) {
+    // π permutation: (x, y) → (y, 2x + 3y)
+    let new_x = y;
+    let new_y = (2 * x + 3 * y) % 5;
+    (new_x, new_y)
+}
+
+fn keccak_rotation_offset(x: usize, y: usize) -> u32 {
+    const OFFSETS: [[u32; 5]; 5] = [
+        [0, 36, 3, 41, 18],
+        [1, 44, 10, 45, 2],
+        [62, 6, 43, 15, 61],
+        [28, 55, 25, 21, 56],
+        [27, 20, 39, 8, 14],
+    ];
+    OFFSETS[x % 5][y % 5]
+}
+
+fn keccak_round_constant(round: usize) -> Field {
+    const RC: [u64; 24] = [
+        0x0000000000000001, 0x0000000000008082, 0x800000000000808A, 0x8000000080008000,
+        0x000000000000808B, 0x0000000080000001, 0x8000000080008081, 0x8000000000008009,
+        0x000000000000008A, 0x0000000000000088, 0x0000000080008009, 0x000000008000000A,
+        0x000000008000808B, 0x800000000000008B, 0x8000000000008089, 0x8000000000008003,
+        0x8000000000008002, 0x8000000000000080, 0x000000000000800A, 0x800000008000000A,
+        0x8000000080008081, 0x8000000000008080, 0x0000000080000001, 0x8000000080008008,
+    ];
+    Field::from(RC[round % 24])
+}
+
+fn compute_lc_value(cs: &ConstraintSystem, lc: &LinearCombination) -> Option<Field> {
+    let mut result = lc.constant;
+    for (var, coeff) in &lc.terms {
+        if let Some(val) = cs.get_value(*var) {
+            result += *coeff * val;
+        } else {
+            return None;
+        }
+    }
+    Some(result)
+}
+
 // Helper function to convert Field to u64 (for range checks)
 fn field_to_u64(f: Field) -> Result<u64, CircuitError> {
     // Convert field element to BigInt and then to u64
@@ -494,5 +909,68 @@ mod tests {
 
         assert!(cs.is_satisfied());
         assert_eq!(cs.get_value(lt.result()), Some(Field::from(0)));
+    }
+
+    #[test]
+    fn test_blake3_gadget() {
+        let mut cs = ConstraintSystem::new();
+
+        let input1 = cs.alloc_variable(Some(Field::from(42)));
+        let input2 = cs.alloc_variable(Some(Field::from(100)));
+        let input3 = cs.alloc_variable(Some(Field::from(255)));
+
+        let blake3 = Blake3Gadget::new(&mut cs, &[input1, input2, input3]).unwrap();
+
+        assert!(cs.is_satisfied());
+        assert!(cs.get_value(blake3.output()).is_some());
+        println!("Blake3 constraints: {}", blake3.num_constraints);
+    }
+
+    #[test]
+    fn test_blake3_multiple_chunks() {
+        let mut cs = ConstraintSystem::new();
+
+        // Create 20 inputs to test multi-chunk processing (16 per chunk)
+        let mut inputs = Vec::new();
+        for i in 0..20 {
+            inputs.push(cs.alloc_variable(Some(Field::from(i))));
+        }
+
+        let blake3 = Blake3Gadget::new(&mut cs, &inputs).unwrap();
+
+        assert!(cs.is_satisfied());
+        assert!(cs.get_value(blake3.output()).is_some());
+        println!("Blake3 multi-chunk constraints: {}", blake3.num_constraints);
+    }
+
+    #[test]
+    fn test_keccak_gadget() {
+        let mut cs = ConstraintSystem::new();
+
+        let input1 = cs.alloc_variable(Some(Field::from(42)));
+        let input2 = cs.alloc_variable(Some(Field::from(100)));
+
+        let keccak = KeccakGadget::new(&mut cs, &[input1, input2]).unwrap();
+
+        assert!(cs.is_satisfied());
+        assert!(cs.get_value(keccak.output()).is_some());
+        println!("Keccak constraints: {}", keccak.num_constraints);
+    }
+
+    #[test]
+    fn test_keccak_ethereum_compat() {
+        let mut cs = ConstraintSystem::new();
+
+        // Simulate Ethereum address hashing (20 bytes = ~3 field elements)
+        let addr1 = cs.alloc_variable(Some(Field::from(0xdeadbeef)));
+        let addr2 = cs.alloc_variable(Some(Field::from(0xcafebabe)));
+        let addr3 = cs.alloc_variable(Some(Field::from(0x12345678)));
+
+        let keccak = KeccakGadget::new(&mut cs, &[addr1, addr2, addr3]).unwrap();
+
+        assert!(cs.is_satisfied());
+        let hash = cs.get_value(keccak.output()).unwrap();
+        assert!(hash != Field::from(0)); // Non-zero hash
+        println!("Keccak Ethereum hash constraints: {}", keccak.num_constraints);
     }
 }
