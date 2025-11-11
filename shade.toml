@@ -1,0 +1,248 @@
+# Shade Framework Configuration
+# This is the global configuration file for Shade Framework
+
+[framework]
+name = "Shade Framework"
+version = "0.1.0"
+description = "Next-generation zero-knowledge privacy platform"
+homepage = "https://shadeframework.io"
+repository = "https://github.com/shadow-protocol/shade"
+license = "MIT"
+authors = ["Shadow Protocol Contributors"]
+
+[build]
+# Default build optimization level (0-3)
+optimization_level = 2
+
+# Enable parallel compilation
+parallel = true
+
+# Number of threads for parallel operations (0 = auto-detect)
+threads = 0
+
+# Enable caching of compiled circuits
+cache = true
+
+# Cache directory
+cache_dir = ".shade/cache"
+
+# Output directory for build artifacts
+output_dir = "build"
+
+[circuit]
+# Default proving system backend
+# Options: groth16, plonk, stark, plonky2, nova
+default_backend = "groth16"
+
+# Enable automatic circuit optimization
+optimize = true
+
+# Maximum number of constraints (prevents DoS)
+max_constraints = 10_000_000
+
+# Enable strict input validation
+strict_inputs = true
+
+# Enable constraint debugging
+debug_constraints = false
+
+[proving]
+# Enable parallel proving (multi-threaded witness generation)
+parallel_proving = true
+
+# Use GPU acceleration if available
+gpu_acceleration = true
+
+# Proof caching (reuse identical proofs)
+proof_cache = true
+
+# Maximum proof cache size (in MB)
+proof_cache_size = 1024
+
+[security]
+# Require constant-time operations (prevent timing side-channels)
+constant_time = true
+
+# Enable secure random number generation
+secure_rng = true
+
+# Audit mode (log all operations)
+audit_mode = false
+
+# Audit log path
+audit_log = ".shade/audit.log"
+
+[visual_builder]
+# Enable visual builder
+enabled = true
+
+# Visual builder port
+port = 3000
+
+# Auto-open browser on start
+auto_open = true
+
+# Enable hot reload
+hot_reload = true
+
+# Component library path
+components_dir = "visual-builder/components"
+
+[ai_assistant]
+# Enable AI-powered circuit generation
+enabled = true
+
+# AI model provider
+# Options: openai, anthropic, local
+provider = "openai"
+
+# API key (set via environment variable SHADE_AI_API_KEY)
+# api_key = "..."
+
+# Model name
+model = "gpt-4"
+
+# Enable natural language circuit generation
+nl_generation = true
+
+# Enable optimization suggestions
+optimization_hints = true
+
+[deployment]
+# Default deployment chains
+default_chains = ["ethereum", "polygon"]
+
+# RPC endpoints
+[deployment.ethereum]
+rpc_url = "https://eth-mainnet.g.alchemy.com/v2/YOUR_KEY"
+chain_id = 1
+explorer = "https://etherscan.io"
+
+[deployment.goerli]
+rpc_url = "https://eth-goerli.g.alchemy.com/v2/YOUR_KEY"
+chain_id = 5
+explorer = "https://goerli.etherscan.io"
+
+[deployment.polygon]
+rpc_url = "https://polygon-mainnet.g.alchemy.com/v2/YOUR_KEY"
+chain_id = 137
+explorer = "https://polygonscan.com"
+
+[deployment.solana]
+rpc_url = "https://api.mainnet-beta.solana.com"
+cluster = "mainnet-beta"
+explorer = "https://explorer.solana.com"
+
+[testing]
+# Enable test suite
+enabled = true
+
+# Test framework
+# Options: builtin, proptest, quickcheck
+framework = "builtin"
+
+# Enable fuzz testing
+fuzz_testing = true
+
+# Fuzz test duration (seconds)
+fuzz_duration = 60
+
+# Enable coverage reporting
+coverage = true
+
+# Minimum code coverage percentage
+min_coverage = 80
+
+[performance]
+# Enable performance profiling
+profiling = false
+
+# Benchmark mode
+benchmark = false
+
+# Performance metrics output
+metrics_output = ".shade/metrics.json"
+
+[plugins]
+# Plugin directory
+plugins_dir = "plugins"
+
+# Auto-load plugins
+auto_load = true
+
+# Allowed plugin capabilities
+allowed_capabilities = [
+    "proof_system",
+    "gadget",
+    "blockchain_adapter",
+    "ui_theme",
+    "export_target"
+]
+
+[logging]
+# Log level: trace, debug, info, warn, error
+level = "info"
+
+# Log output: stdout, file, both
+output = "stdout"
+
+# Log file path (if output = file or both)
+file = ".shade/shade.log"
+
+# Enable colored output
+color = true
+
+# Log format: pretty, json, compact
+format = "pretty"
+
+[templates]
+# Templates directory
+templates_dir = "privacy-apps/templates"
+
+# Featured templates
+featured = [
+    "private_mixer",
+    "anonymous_voting",
+    "credential_system",
+    "encrypted_messaging"
+]
+
+# Community templates repository
+community_repo = "https://github.com/shade-framework/templates"
+
+[sdk]
+# SDK languages
+languages = ["rust", "typescript", "python"]
+
+# Generate SDK documentation
+generate_docs = true
+
+# SDK documentation output
+docs_output = "sdk/docs"
+
+[verifier]
+# Verifier generation
+# Options: solidity, rust, typescript, all
+generate = "all"
+
+# Verifier optimization
+optimize_verifier = true
+
+# Verifier output directory
+output_dir = "verifiers"
+
+[experimental]
+# Enable experimental features (may be unstable)
+enabled = false
+
+# Experimental zkVM
+zkvm = false
+
+# Recursive proof composition
+recursive_proofs = false
+
+# Multi-party computation (MPC) setup
+mpc_setup = false
+
+# Post-quantum proof systems
+post_quantum = false
