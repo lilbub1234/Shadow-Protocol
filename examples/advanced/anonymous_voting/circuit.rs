@@ -1,7 +1,7 @@
 // Anonymous Voting Circuit
 // Proves voter eligibility without revealing identity
 
-use shade::prelude::*;
+use shroud::prelude::*;
 
 /// Anonymous voting circuit
 ///
@@ -9,7 +9,7 @@ use shade::prelude::*;
 /// 1. Voter knows a secret corresponding to an eligible voter (merkle proof)
 /// 2. Voter hasn't voted before (nullifier not used)
 /// 3. Vote is valid (within range of candidates)
-#[shade::circuit]
+#[shroud::circuit]
 pub struct AnonymousVote {
     // Private inputs
     #[private]

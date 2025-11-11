@@ -1,6 +1,6 @@
 /**
- * Shade Framework TypeScript SDK
- * Copyright (c) 2025 Shadow Protocol Contributors
+ * Shroud Framework TypeScript SDK
+ * Copyright (c) 2025 Shroud Protocol Contributors
  * Licensed under MIT License
  */
 

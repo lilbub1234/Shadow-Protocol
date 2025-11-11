@@ -1,8 +1,8 @@
 <div align="center">
 
-![Shade Framework Logo](https://i.postimg.cc/jWH6bS2S/Shade-Framework-Logo.png)
+![Shroud Framework Logo](https://i.postimg.cc/jWH6bS2S/Shroud-Framework-Logo.png)
 
-# Shade Framework
+# Shroud Framework
 
 **The Next-Generation Zero-Knowledge Privacy Platform**
 
@@ -11,21 +11,21 @@
 [![Version](https://img.shields.io/badge/version-0.1.0-orange.svg)]()
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)]()
 
-[Documentation](./docs) • [Examples](./examples) • [Community](https://discord.gg/shade) • [Playground](https://playground.shadeframework.io)
+[Documentation](./docs) • [Examples](./examples) • [Community](https://discord.gg/shroud) • [Playground](https://playground.shroudframework.io)
 
 </div>
 
 ---
 
-## What is Shade Framework?
+## What is Shroud Framework?
 
-**Shade Framework** is a revolutionary zero-knowledge privacy platform that empowers anyone to build privacy-preserving applications without writing code. Born from the vision of making privacy accessible to all, Shade transcends traditional ZK circuit compilers by providing a complete ecosystem for designing, deploying, and scaling privacy applications across any blockchain.
+**Shroud Framework** is a revolutionary zero-knowledge privacy platform that empowers anyone to build privacy-preserving applications without writing code. Born from the vision of making privacy accessible to all, Shroud transcends traditional ZK circuit compilers by providing a complete ecosystem for designing, deploying, and scaling privacy applications across any blockchain.
 
-Unlike conventional ZK tools that require deep cryptographic expertise, Shade democratizes privacy through its visual no-code builder, AI-assisted circuit generation, and modular architecture—enabling developers, activists, enterprises, and individuals to craft sophisticated privacy solutions in minutes, not months.
+Unlike conventional ZK tools that require deep cryptographic expertise, Shroud democratizes privacy through its visual no-code builder, AI-assisted circuit generation, and modular architecture—enabling developers, activists, enterprises, and individuals to craft sophisticated privacy solutions in minutes, not months.
 
 ## Core Philosophy
 
-Privacy is a fundamental human right, not a technical barrier. Shade Framework eliminates the complexity between intent and implementation, transforming privacy development from an expert-only domain into an accessible craft for all.
+Privacy is a fundamental human right, not a technical barrier. Shroud Framework eliminates the complexity between intent and implementation, transforming privacy development from an expert-only domain into an accessible craft for all.
 
 ---
 
@@ -97,7 +97,7 @@ Modern tooling that respects your time:
 - **CI/CD Integration**: Deploy privacy apps with GitHub Actions, GitLab CI
 
 ### Plugin Ecosystem
-Extend Shade with community-built plugins:
+Extend Shroud with community-built plugins:
 
 - Custom proof systems
 - Novel cryptographic primitives
@@ -107,9 +107,9 @@ Extend Shade with community-built plugins:
 
 ---
 
-## Comparison: Shade Framework vs Circom Chan
+## Comparison: Shroud Framework vs Circom Chan
 
-| Dimension | **Shade Framework** | Circom Chan |
+| Dimension | **Shroud Framework** | Circom Chan |
 |-----------|-------------------|-------------|
 | **Purpose** | Complete privacy application platform | Circuit compiler only |
 | **User Interface** | Visual no-code builder + code editor | Code-only (CLI) |
@@ -133,13 +133,13 @@ Extend Shade with community-built plugins:
 | **Community Tools** | Visual playground, template marketplace, plugin registry | Library of circuits (circomlib) |
 | **Use Case Coverage** | Full-stack privacy applications | Cryptographic circuit primitives |
 
-**Why Shade Framework is Superior:**
+**Why Shroud Framework is Superior:**
 
-Circom Chan serves as an excellent circuit compiler—a foundational tool for ZK development. However, Shade Framework represents the next evolution: a complete privacy application platform. While Circom Chan requires developers to manually wire together circuits, proving systems, and blockchain integrations, Shade provides an end-to-end solution.
+Circom Chan serves as an excellent circuit compiler—a foundational tool for ZK development. However, Shroud Framework represents the next evolution: a complete privacy application platform. While Circom Chan requires developers to manually wire together circuits, proving systems, and blockchain integrations, Shroud provides an end-to-end solution.
 
-Think of Circom Chan as assembly language—powerful but low-level. Shade Framework is the high-level language with an IDE, debugger, testing suite, and deployment platform. You wouldn't build a modern web application with assembly; similarly, privacy apps deserve modern tooling.
+Think of Circom Chan as assembly language—powerful but low-level. Shroud Framework is the high-level language with an IDE, debugger, testing suite, and deployment platform. You wouldn't build a modern web application with assembly; similarly, privacy apps deserve modern tooling.
 
-Shade's visual builder democratizes privacy, its zkVM enables universal computation, its multi-backend support future-proofs your applications, and its AI assistance accelerates development by 100x. Where Circom Chan stops at circuit compilation, Shade Framework begins—transforming circuits into production-ready privacy applications.
+Shroud's visual builder democratizes privacy, its zkVM enables universal computation, its multi-backend support future-proofs your applications, and its AI assistance accelerates development by 100x. Where Circom Chan stops at circuit compilation, Shroud Framework begins—transforming circuits into production-ready privacy applications.
 
 ---
 
@@ -148,20 +148,20 @@ Shade's visual builder democratizes privacy, its zkVM enables universal computat
 ### Installation
 
 ```bash
-# Install Shade CLI
-curl -fsSL https://get.shadeframework.io | sh
+# Install Shroud CLI
+curl -fsSL https://get.shroudframework.io | sh
 
 # Or via package managers
-cargo install shade-cli      # Rust
-npm install -g @shade/cli    # Node.js
-pip install shade-framework  # Python
+cargo install shroud-cli      # Rust
+npm install -g @shroud/cli    # Node.js
+pip install shroud-framework  # Python
 ```
 
 ### Create Your First Privacy App
 
 ```bash
 # Launch interactive setup
-shade init my-privacy-app
+shroud init my-privacy-app
 
 # Choose a template
 # → Private Mixer
@@ -170,16 +170,16 @@ shade init my-privacy-app
 # → Start from scratch
 
 # Start visual builder
-shade build --visual
+shroud build --visual
 
 # Or use AI assistant
-shade generate "private voting for DAOs with quadratic voting"
+shroud generate "private voting for DAOs with quadratic voting"
 
 # Test your circuit
-shade test
+shroud test
 
 # Deploy to multiple chains
-shade deploy --chains ethereum,solana,polygon
+shroud deploy --chains ethereum,solana,polygon
 ```
 
 ### Visual Builder Example
@@ -198,7 +198,7 @@ Click "Generate Proof" to see your circuit in action. Export to code when ready.
 
 ## Architecture Overview
 
-Shade Framework consists of seven integrated layers:
+Shroud Framework consists of seven integrated layers:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -218,7 +218,7 @@ Shade Framework consists of seven integrated layers:
 └─────────────────────────────────────────────────────────┘
 ```
 
-Each layer is modular and replaceable, ensuring Shade evolves with the rapidly advancing ZK landscape.
+Each layer is modular and replaceable, ensuring Shroud evolves with the rapidly advancing ZK landscape.
 
 ---
 
@@ -228,28 +228,28 @@ Each layer is modular and replaceable, ensuring Shade evolves with the rapidly a
 Build confidential trading platforms where trades execute privately but remain verifiable:
 
 ```bash
-shade create mixer --asset ETH --anonymity-set 1000 --deploy ethereum
+shroud create mixer --asset ETH --anonymity-set 1000 --deploy ethereum
 ```
 
 ### Anonymous Governance
 Launch private voting systems for DAOs, governments, or organizations:
 
 ```bash
-shade create voting --type quadratic --eligibility token-holder --deploy polygon
+shroud create voting --type quadratic --eligibility token-holder --deploy polygon
 ```
 
 ### Zero-Knowledge Identity
 Issue and verify credentials without exposing personal data:
 
 ```bash
-shade create credentials --schema age-verification --selective-disclosure
+shroud create credentials --schema age-verification --selective-disclosure
 ```
 
 ### Encrypted Communications
 Deploy end-to-end encrypted messaging with zero-knowledge metadata:
 
 ```bash
-shade create messaging --encryption kyber --metadata-privacy full
+shroud create messaging --encryption kyber --metadata-privacy full
 ```
 
 ---
@@ -257,7 +257,7 @@ shade create messaging --encryption kyber --metadata-privacy full
 ## Project Structure
 
 ```
-shade-framework/
+shroud-framework/
 ├── core/                    # Core proving engine and circuit builder
 │   ├── engine/             # Proof generation and verification
 │   ├── circuit-builder/    # Circuit composition and optimization
@@ -316,7 +316,7 @@ Comprehensive documentation is available in the [docs](./docs) directory:
 - **[Visual Builder Tutorial](./docs/guides/visual-builder.md)** - Master the no-code interface
 - **[Circuit Design Patterns](./docs/guides/circuit-patterns.md)** - Best practices and optimizations
 - **[zkVM Programming](./docs/guides/zkvm-programming.md)** - Build universal ZK applications
-- **[Plugin Development](./docs/guides/plugin-development.md)** - Extend Shade Framework
+- **[Plugin Development](./docs/guides/plugin-development.md)** - Extend Shroud Framework
 - **[Architecture Deep Dive](./docs/architecture/overview.md)** - System design and internals
 - **[API Reference](./docs/api/reference.md)** - Complete API documentation
 
@@ -326,11 +326,11 @@ Comprehensive documentation is available in the [docs](./docs) directory:
 
 Join our thriving community of privacy advocates and builders:
 
-- **Discord**: [https://discord.gg/shade](https://discord.gg/shade)
-- **Forum**: [https://forum.shadeframework.io](https://forum.shadeframework.io)
+- **Discord**: [https://discord.gg/shroud](https://discord.gg/shroud)
+- **Forum**: [https://forum.shroudframework.io](https://forum.shroudframework.io)
 - **Twitter**: [@ShadeFramework](https://twitter.com/ShadeFramework)
-- **GitHub Discussions**: [Discussions](https://github.com/shadow-protocol/shade/discussions)
-- **Blog**: [https://blog.shadeframework.io](https://blog.shadeframework.io)
+- **GitHub Discussions**: [Discussions](https://github.com/shroud-protocol/shroud/discussions)
+- **Blog**: [https://blog.shroudframework.io](https://blog.shroudframework.io)
 
 ### Contributing
 
@@ -384,9 +384,9 @@ git push origin feature/amazing-privacy-tool
 
 ## Performance Benchmarks
 
-Shade Framework delivers industry-leading performance:
+Shroud Framework delivers industry-leading performance:
 
-| Operation | Shade Framework | Circom Chan | Improvement |
+| Operation | Shroud Framework | Circom Chan | Improvement |
 |-----------|----------------|-------------|-------------|
 | Circuit Compilation | 0.8s | 2.3s | **2.9x faster** |
 | Proof Generation (1M constraints) | 1.2s | 3.8s | **3.2x faster** |
@@ -414,10 +414,10 @@ See [SECURITY.md](./SECURITY.md) for our security policy and disclosure process.
 
 ## License
 
-Shade Framework is open-source software licensed under the [MIT License](./LICENSE).
+Shroud Framework is open-source software licensed under the [MIT License](./LICENSE).
 
 ```
-Copyright (c) 2025 Shadow Protocol Contributors
+Copyright (c) 2025 Shroud Protocol Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -433,7 +433,7 @@ furnished to do so, subject to the following conditions:
 
 ## Acknowledgments
 
-Shade Framework stands on the shoulders of giants. We're grateful to:
+Shroud Framework stands on the shoulders of giants. We're grateful to:
 
 - The zero-knowledge research community for decades of foundational work
 - Zcash, Ethereum, and privacy pioneers who proved ZK can scale
@@ -446,6 +446,6 @@ Shade Framework stands on the shoulders of giants. We're grateful to:
 
 **Built with conviction that privacy is a right, not a privilege.**
 
-[Get Started](./docs/guides/getting-started.md) • [Join Discord](https://discord.gg/shade) • [Read Docs](./docs)
+[Get Started](./docs/guides/getting-started.md) • [Join Discord](https://discord.gg/shroud) • [Read Docs](./docs)
 
 </div>

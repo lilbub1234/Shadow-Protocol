@@ -1,5 +1,5 @@
-// Shade Framework - Nova Folding Scheme
-// Copyright (c) 2025 Shadow Protocol Contributors
+// Shroud Framework - Nova Folding Scheme
+// Copyright (c) 2025 Shroud Protocol Contributors
 // Licensed under MIT License
 
 //! Nova: Recursive SNARKs without trusted setup

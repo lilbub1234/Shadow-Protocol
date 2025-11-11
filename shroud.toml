@@ -1,14 +1,14 @@
-# Shade Framework Configuration
-# This is the global configuration file for Shade Framework
+# Shroud Framework Configuration
+# This is the global configuration file for Shroud Framework
 
 [framework]
-name = "Shade Framework"
+name = "Shroud Framework"
 version = "0.1.0"
 description = "Next-generation zero-knowledge privacy platform"
 homepage = "https://shadeframework.io"
-repository = "https://github.com/shadow-protocol/shade"
+repository = "https://github.com/shroud-protocol/shroud"
 license = "MIT"
-authors = ["Shadow Protocol Contributors"]
+authors = ["Shroud Protocol Contributors"]
 
 [build]
 # Default build optimization level (0-3)
@@ -24,7 +24,7 @@ threads = 0
 cache = true
 
 # Cache directory
-cache_dir = ".shade/cache"
+cache_dir = ".shroud/cache"
 
 # Output directory for build artifacts
 output_dir = "build"
@@ -70,7 +70,7 @@ secure_rng = true
 audit_mode = false
 
 # Audit log path
-audit_log = ".shade/audit.log"
+audit_log = ".shroud/audit.log"
 
 [visual_builder]
 # Enable visual builder
@@ -161,7 +161,7 @@ profiling = false
 benchmark = false
 
 # Performance metrics output
-metrics_output = ".shade/metrics.json"
+metrics_output = ".shroud/metrics.json"
 
 [plugins]
 # Plugin directory
@@ -187,7 +187,7 @@ level = "info"
 output = "stdout"
 
 # Log file path (if output = file or both)
-file = ".shade/shade.log"
+file = ".shroud/shroud.log"
 
 # Enable colored output
 color = true
@@ -208,7 +208,7 @@ featured = [
 ]
 
 # Community templates repository
-community_repo = "https://github.com/shade-framework/templates"
+community_repo = "https://github.com/shroud-framework/templates"
 
 [sdk]
 # SDK languages

@@ -1,5 +1,5 @@
-// Shade Framework - Witness Generation
-// Copyright (c) 2025 Shadow Protocol Contributors
+// Shroud Framework - Witness Generation
+// Copyright (c) 2025 Shroud Protocol Contributors
 // Licensed under MIT License
 
 //! Witness generation and management

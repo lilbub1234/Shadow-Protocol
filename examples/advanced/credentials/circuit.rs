@@ -1,7 +1,7 @@
 // Zero-Knowledge Credential System
 // Proves attributes without revealing identity
 
-use shade::prelude::*;
+use shroud::prelude::*;
 
 /// Credential circuit
 ///
@@ -10,7 +10,7 @@ use shade::prelude::*;
 /// 2. Credential attributes satisfy requirements
 /// 3. Credential is not revoked
 /// WITHOUT revealing user identity or full credential data
-#[shade::circuit]
+#[shroud::circuit]
 pub struct CredentialCircuit {
     // Private inputs
     #[private]

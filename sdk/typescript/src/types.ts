@@ -1,5 +1,5 @@
 /**
- * Shade Framework - Core Types (TypeScript)
+ * Shroud Framework - Core Types (TypeScript)
  */
 
 /**

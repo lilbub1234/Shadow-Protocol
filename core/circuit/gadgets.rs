@@ -1,5 +1,5 @@
-// Shade Framework - Circuit Gadgets
-// Copyright (c) 2025 Shadow Protocol Contributors
+// Shroud Framework - Circuit Gadgets
+// Copyright (c) 2025 Shroud Protocol Contributors
 // Licensed under MIT License
 
 //! Common circuit gadgets and building blocks

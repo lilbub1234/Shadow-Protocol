@@ -1,11 +1,11 @@
-// Shade Framework - Procedural Macro Example
-// Copyright (c) 2025 Shadow Protocol Contributors
+// Shroud Framework - Procedural Macro Example
+// Copyright (c) 2025 Shroud Protocol Contributors
 // Licensed under MIT License
 
-//! Example demonstrating the use of Shade procedural macros
+//! Example demonstrating the use of Shroud procedural macros
 //! for ergonomic circuit development
 
-use shade::prelude::*;
+use shroud::prelude::*;
 use shade_macros::*;
 
 /// Simple square circuit using derive macro
@@ -151,7 +151,7 @@ pub fn poseidon_hash(cs: &mut ConstraintSystem, inputs: &[Variable]) -> Result<V
 
 fn main() {
     println!("===========================================");
-    println!("Shade Framework - Procedural Macro Example");
+    println!("Shroud Framework - Procedural Macro Example");
     println!("===========================================\n");
 
     // Example 1: Square circuit

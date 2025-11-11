@@ -1,5 +1,5 @@
-// Shade Framework - Advanced Cryptographic Primitives
-// Copyright (c) 2025 Shadow Protocol Contributors
+// Shroud Framework - Advanced Cryptographic Primitives
+// Copyright (c) 2025 Shroud Protocol Contributors
 // Licensed under MIT License
 
 //! Advanced cryptographic primitives and gadgets

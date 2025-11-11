@@ -1,13 +1,13 @@
 """
-Shade Framework - Python SDK
-Copyright (c) 2025 Shadow Protocol Contributors
+Shroud Framework - Python SDK
+Copyright (c) 2025 Shroud Protocol Contributors
 Licensed under MIT License
 
 Zero-knowledge proof framework for privacy-preserving applications.
 """
 
 __version__ = "0.1.0"
-__author__ = "Shadow Protocol Contributors"
+__author__ = "Shroud Protocol Contributors"
 __license__ = "MIT"
 
 from .circuit import Circuit, ConstraintSystem, Variable

@@ -1,7 +1,7 @@
 {
-  "name": "@shade/sdk",
+  "name": "@shroud/sdk",
   "version": "0.1.0",
-  "description": "TypeScript SDK for Shade Framework - Next-generation zero-knowledge privacy platform",
+  "description": "TypeScript SDK for Shroud Framework - Next-generation zero-knowledge privacy platform",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -20,18 +20,18 @@
     "privacy",
     "cryptography",
     "blockchain",
-    "shade",
-    "shade-framework"
+    "shroud",
+    "shroud-framework"
   ],
-  "author": "Shadow Protocol Contributors",
+  "author": "Shroud Protocol Contributors",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/shadow-protocol/shade.git",
+    "url": "https://github.com/shroud-protocol/shroud.git",
     "directory": "sdk/typescript"
   },
   "bugs": {
-    "url": "https://github.com/shadow-protocol/shade/issues"
+    "url": "https://github.com/shroud-protocol/shroud/issues"
   },
   "homepage": "https://shadeframework.io",
   "dependencies": {

@@ -1,5 +1,5 @@
 """
-Shade Framework - Circuit Module (Python)
+Shroud Framework - Circuit Module (Python)
 
 Provides Python bindings for building zero-knowledge circuits.
 """

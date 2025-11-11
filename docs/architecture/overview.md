@@ -1,13 +1,13 @@
-# Shade Framework Architecture
+# Shroud Framework Architecture
 
 ## Executive Summary
 
-Shade Framework is built on a modular, layered architecture that separates concerns while enabling seamless integration. This document provides a comprehensive overview of the system design, component interactions, and architectural decisions that make Shade the most advanced zero-knowledge privacy platform.
+Shroud Framework is built on a modular, layered architecture that separates concerns while enabling seamless integration. This document provides a comprehensive overview of the system design, component interactions, and architectural decisions that make Shroud the most advanced zero-knowledge privacy platform.
 
 ## Design Principles
 
 ### 1. Modularity First
-Every component is independently replaceable. Want to swap Groth16 for Plonky2? Change one configuration line. This ensures Shade remains future-proof as ZK technology evolves.
+Every component is independently replaceable. Want to swap Groth16 for Plonky2? Change one configuration line. This ensures Shroud remains future-proof as ZK technology evolves.
 
 ### 2. Progressive Complexity
 Users start with visual tools and templates, then progressively access lower-level APIs as their expertise grows. Beginners build apps in minutes; experts have full control.
@@ -20,7 +20,7 @@ High-level abstractions must never sacrifice performance. We achieve this throug
 - Parallel proof generation
 
 ### 4. Universal Compatibility
-Shade generates code that runs anywhere:
+Shroud generates code that runs anywhere:
 - All major blockchains (EVM, SVM, CosmWasm)
 - Web browsers (WASM)
 - Mobile devices (iOS, Android)
@@ -217,7 +217,7 @@ fn private_computation(secret: u64, public_input: u64) -> u64 {
     result // Public output
 }
 
-// Shade automatically generates ZK proof that:
+// Shroud automatically generates ZK proof that:
 // "I know a secret such that when hashed and combined with
 //  public_input, produces this result"
 ```
@@ -389,7 +389,7 @@ impl ProofSystemPlugin for CustomProofSystemPlugin {
 ### Cross-Chain Deployment Flow
 
 ```
-Privacy App (Shade) → Deployment Config → Chain Adapters
+Privacy App (Shroud) → Deployment Config → Chain Adapters
                               ↓
             ┌────────────┬────────────┬────────────┐
             ↓            ↓            ↓            ↓
@@ -456,7 +456,7 @@ Privacy App (Shade) → Deployment Config → Chain Adapters
 
 ## Comparison with Traditional Architectures
 
-| Aspect | Circom Chan | Shade Framework |
+| Aspect | Circom Chan | Shroud Framework |
 |--------|-------------|-----------------|
 | **Layers** | 2 (Compiler + Backend) | 7 (Full stack) |
 | **Modularity** | Monolithic compiler | Plugin-based architecture |
@@ -487,6 +487,6 @@ Privacy App (Shade) → Deployment Config → Chain Adapters
 
 ## Conclusion
 
-Shade Framework's architecture represents a paradigm shift from circuit compilers to complete privacy platforms. By embracing modularity, progressive complexity, and universal compatibility, Shade empowers everyone—from beginners to experts—to build production-grade privacy applications.
+Shroud Framework's architecture represents a paradigm shift from circuit compilers to complete privacy platforms. By embracing modularity, progressive complexity, and universal compatibility, Shroud empowers everyone—from beginners to experts—to build production-grade privacy applications.
 
-The layered design ensures Shade evolves with the rapidly advancing ZK landscape, while the plugin system enables community innovation without forking. This is privacy infrastructure built to last.
+The layered design ensures Shroud evolves with the rapidly advancing ZK landscape, while the plugin system enables community innovation without forking. This is privacy infrastructure built to last.

@@ -1,5 +1,5 @@
-// Shade Framework - Plookup (Lookup Tables)
-// Copyright (c) 2025 Shadow Protocol Contributors
+// Shroud Framework - Plookup (Lookup Tables)
+// Copyright (c) 2025 Shroud Protocol Contributors
 // Licensed under MIT License
 
 //! Plookup: Efficient lookup arguments for zkSNARKs

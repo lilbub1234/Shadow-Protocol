@@ -1,5 +1,5 @@
 """
-Shade Framework - Field Arithmetic (Python)
+Shroud Framework - Field Arithmetic (Python)
 
 Finite field arithmetic modulo BN254 prime.
 """

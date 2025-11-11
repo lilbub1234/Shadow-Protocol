@@ -1,11 +1,11 @@
-// Hello Shade - Your First Zero-Knowledge Circuit
+// Hello Shroud - Your First Zero-Knowledge Circuit
 // This example demonstrates a simple circuit that proves knowledge of a secret
 // without revealing it.
 
-use shade::prelude::*;
+use shroud::prelude::*;
 
 /// A simple circuit that proves "I know the secret to this hash"
-#[shade::circuit]
+#[shroud::circuit]
 pub struct HelloShade {
     /// Private input: the secret (never revealed)
     #[private]
@@ -27,7 +27,7 @@ impl Circuit for HelloShade {
 }
 
 fn main() {
-    println!("🔐 Hello Shade - Your First Zero-Knowledge Circuit\n");
+    println!("🔐 Hello Shroud - Your First Zero-Knowledge Circuit\n");
 
     // Step 1: Generate a secret
     let secret = Field::from(42);
@@ -68,7 +68,7 @@ fn main() {
     println!("  4. The proof reveals NOTHING about the secret itself!");
     println!("  5. Anyone can verify the proof without learning the secret");
 
-    println!("\n✨ Welcome to zero-knowledge privacy with Shade Framework!");
+    println!("\n✨ Welcome to zero-knowledge privacy with Shroud Framework!");
 }
 
 #[cfg(test)]

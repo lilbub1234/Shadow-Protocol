@@ -1,12 +1,12 @@
 [package]
-name = "shade-framework"
+name = "shroud-framework"
 version = "0.1.0"
 edition = "2021"
-authors = ["Shadow Protocol Contributors"]
+authors = ["Shroud Protocol Contributors"]
 license = "MIT"
 description = "Next-generation zero-knowledge privacy platform with visual no-code builder"
 homepage = "https://shadeframework.io"
-repository = "https://github.com/shadow-protocol/shade"
+repository = "https://github.com/shroud-protocol/shroud"
 documentation = "https://docs.shadeframework.io"
 readme = "README.md"
 keywords = ["zero-knowledge", "zk-snarks", "privacy", "cryptography", "blockchain"]
@@ -151,7 +151,7 @@ plugins = []
 cross-chain = []
 
 [[bin]]
-name = "shade"
+name = "shroud"
 path = "cli/main.rs"
 
 [[bench]]

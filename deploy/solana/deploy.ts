@@ -1,6 +1,6 @@
 /**
- * Shade Framework - Solana Deployment Script
- * Copyright (c) 2025 Shadow Protocol Contributors
+ * Shroud Framework - Solana Deployment Script
+ * Copyright (c) 2025 Shroud Protocol Contributors
  */
 
 import {
@@ -29,11 +29,11 @@ interface DeploymentResult {
 }
 
 /**
- * Deploy Shade Framework program to Solana
+ * Deploy Shroud Framework program to Solana
  */
 async function deployShadeFram work(config: DeploymentConfig): Promise<DeploymentResult> {
   console.log('=========================================');
-  console.log('Shade Framework - Solana Deployment');
+  console.log('Shroud Framework - Solana Deployment');
   console.log('=========================================\n');
 
   // Connect to cluster
@@ -139,14 +139,14 @@ async function deployShadeFram work(config: DeploymentConfig): Promise<Deploymen
 }
 
 /**
- * Initialize Shade Framework program
+ * Initialize Shroud Framework program
  */
 async function initializeProgram(
   connection: Connection,
   programId: PublicKey,
   authority: Keypair
 ): Promise<string> {
-  console.log('Initializing Shade program...\n');
+  console.log('Initializing Shroud program...\n');
 
   // Create initialization transaction
   const initTx = new Transaction();

@@ -1,5 +1,5 @@
-// Shade Framework - Core Proving Engine
-// Copyright (c) 2025 Shadow Protocol Contributors
+// Shroud Framework - Core Proving Engine
+// Copyright (c) 2025 Shroud Protocol Contributors
 // Licensed under MIT License
 
 //! Core proving engine that orchestrates circuit compilation,
@@ -388,7 +388,7 @@ fn avg_duration_verification(metrics: &[VerificationMetric]) -> std::time::Durat
     total / metrics.len() as u32
 }
 
-/// Shade Framework errors
+/// Shroud Framework errors
 #[derive(Debug)]
 pub enum ShadeError {
     CircuitError(String),
