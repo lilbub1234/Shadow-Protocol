@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.postimg.cc/N2bhJDxS/image.png" alt="Shroud LLM Logo" width="200"/>
+  <img src="https://jumpshare.com/s/5uQXP7D7ulMQMt0wGa5x" alt="Shroud LLM Logo" width="200"/>
 </p>
 
 <h1 align="center">Shroud LLM</h1>
