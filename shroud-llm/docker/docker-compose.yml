@@ -1,12 +1,12 @@
-name: anythingllm
+name: shroudllm
 
 networks:
-  anything-llm:
+  shroud-llm:
     driver: bridge
 
 services:
-  anything-llm:
-    container_name: anythingllm
+  shroud-llm:
+    container_name: shroudllm
     build:
       context: ../.
       dockerfile: ./docker/Dockerfile
@@ -26,6 +26,6 @@ services:
     env_file:
       - .env
     networks:
-      - anything-llm
+      - shroud-llm
     extra_hosts:
       - "host.docker.internal:host-gateway"
