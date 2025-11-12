@@ -1,5 +1,5 @@
-// Shade Framework - Procedural Macros
-// Copyright (c) 2025 Shadow Protocol Contributors
+// Shroud Framework - Procedural Macros
+// Copyright (c) 2025 Shroud Protocol Contributors
 // Licensed under MIT License
 
 //! Procedural macros for circuit development
@@ -90,8 +90,8 @@ pub fn derive_circuit(input: TokenStream) -> TokenStream {
             }
 
             /// Convert to witness
-            pub fn to_witness(&self) -> shade::Witness {
-                let mut witness = shade::Witness::new();
+            pub fn to_witness(&self) -> shroud::Witness {
+                let mut witness = shroud::Witness::new();
                 #(
                     witness.add(stringify!(#private_fields), self.#private_fields);
                 )*
@@ -99,8 +99,8 @@ pub fn derive_circuit(input: TokenStream) -> TokenStream {
             }
 
             /// Convert to public inputs
-            pub fn to_public_inputs(&self) -> shade::PublicInputs {
-                let mut inputs = shade::PublicInputs::new();
+            pub fn to_public_inputs(&self) -> shroud::PublicInputs {
+                let mut inputs = shroud::PublicInputs::new();
                 #(
                     inputs.add(stringify!(#public_fields), self.#public_fields);
                 )*
@@ -108,7 +108,7 @@ pub fn derive_circuit(input: TokenStream) -> TokenStream {
             }
 
             /// Build constraint system
-            pub fn build_constraints(&self, cs: &mut shade::ConstraintSystem) -> Result<(), shade::CircuitError> {
+            pub fn build_constraints(&self, cs: &mut shroud::ConstraintSystem) -> Result<(), shroud::CircuitError> {
                 // Allocate private variables
                 #(
                     let #private_fields = cs.alloc_variable(Some(self.#private_fields));
@@ -178,7 +178,7 @@ pub fn gadget(input: TokenStream) -> TokenStream {
 
             #[cfg(feature = "metrics")]
             {
-                shade::metrics::record_gadget(
+                shroud::metrics::record_gadget(
                     stringify!(#fn_name),
                     _gadget_duration,
                 );

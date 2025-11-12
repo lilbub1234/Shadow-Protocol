@@ -1,8 +1,8 @@
-// Shade Framework - Plugin SDK
-// Copyright (c) 2025 Shadow Protocol Contributors
+// Shroud Framework - Plugin SDK
+// Copyright (c) 2025 Shroud Protocol Contributors
 // Licensed under MIT License
 
-//! Plugin system for extending Shade Framework
+//! Plugin system for extending Shroud Framework
 
 use std::collections::HashMap;
 use std::sync::Arc;
@@ -98,7 +98,7 @@ pub struct PluginMetadata {
 
 /// Plugin context provided during initialization
 pub struct PluginContext {
-    /// Shade Framework version
+    /// Shroud Framework version
     pub framework_version: Version,
 
     /// Configuration
@@ -116,7 +116,7 @@ impl PluginContext {
         Self {
             framework_version,
             config: HashMap::new(),
-            data_dir: std::path::PathBuf::from(".shade/plugins"),
+            data_dir: std::path::PathBuf::from(".shroud/plugins"),
             logger: Arc::new(DefaultLogger),
         }
     }

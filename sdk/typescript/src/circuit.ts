@@ -1,5 +1,5 @@
 /**
- * Shade Framework - Circuit Builder (TypeScript)
+ * Shroud Framework - Circuit Builder (TypeScript)
  */
 
 import { Field, Variable, Witness, PublicInputs, Proof } from './types';

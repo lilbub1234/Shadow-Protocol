@@ -1,5 +1,5 @@
-// Shade Framework - STARK Proof System
-// Copyright (c) 2025 Shadow Protocol Contributors
+// Shroud Framework - STARK Proof System
+// Copyright (c) 2025 Shroud Protocol Contributors
 // Licensed under MIT License
 
 //! STARK (Scalable Transparent ARgument of Knowledge) proof system

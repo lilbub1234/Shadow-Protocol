@@ -1,6 +1,6 @@
 # Circuit Design Patterns
 
-A comprehensive guide to zero-knowledge circuit design patterns in Shade Framework.
+A comprehensive guide to zero-knowledge circuit design patterns in Shroud Framework.
 
 ## Table of Contents
 
@@ -36,9 +36,9 @@ Zero-knowledge circuits require careful design to balance security, performance,
 **Solution**: Hash the secret and prove the hash matches.
 
 ```rust
-use shade::prelude::*;
+use shroud::prelude::*;
 
-#[shade::circuit]
+#[shroud::circuit]
 pub struct HashCheck {
     #[private]
     secret: Field,
@@ -72,7 +72,7 @@ impl Circuit for HashCheck {
 **Solution**: Use a Merkle tree with zero-knowledge proof of inclusion.
 
 ```rust
-#[shade::circuit]
+#[shroud::circuit]
 pub struct MerkleMembership {
     #[private]
     leaf: Field,
@@ -119,7 +119,7 @@ impl Circuit for MerkleMembership {
 **Solution**: Binary decomposition with bit constraints.
 
 ```rust
-#[shade::circuit]
+#[shroud::circuit]
 pub struct RangeProof {
     #[private]
     value: Field,
@@ -164,7 +164,7 @@ impl Circuit for RangeProof {
 **Solution**: Derive a unique nullifier from the secret and context.
 
 ```rust
-#[shade::circuit]
+#[shroud::circuit]
 pub struct NullifierCircuit {
     #[private]
     secret: Field,
@@ -210,7 +210,7 @@ impl Circuit for NullifierCircuit {
 **Solution**: Separate commitments for different attributes.
 
 ```rust
-#[shade::circuit]
+#[shroud::circuit]
 pub struct SelectiveDisclosure {
     #[private]
     full_credential: Vec<Field>, // [age, country, name, ...]
@@ -264,7 +264,7 @@ impl Circuit for SelectiveDisclosure {
 **Solution**: Combine Merkle proof with nullifier.
 
 ```rust
-#[shade::circuit]
+#[shroud::circuit]
 pub struct AnonymousSetMember {
     #[private]
     member_secret: Field,
@@ -350,7 +350,7 @@ let combined = poseidon_hash(&[a, b]); // Fewer rounds, more efficient
 **Solution**: Only compute what's actually needed.
 
 ```rust
-#[shade::circuit]
+#[shroud::circuit]
 pub struct LazyComputation {
     #[private]
     input: Field,
@@ -416,7 +416,7 @@ pub fn batch_verify_membership(
 **Solution**: Validate all inputs with constraints.
 
 ```rust
-#[shade::circuit]
+#[shroud::circuit]
 pub struct SecureCircuit {
     #[private]
     amount: Field,
@@ -499,7 +499,7 @@ pub fn secure_commitment(
 
 ```rust
 // Circuit side
-#[shade::circuit]
+#[shroud::circuit]
 pub struct SpendProof {
     #[private]
     coin_secret: Field,
@@ -555,7 +555,7 @@ pub fn check_permissions(
 }
 
 // Composed circuit
-#[shade::circuit]
+#[shroud::circuit]
 pub struct SecureAction {
     // ...
 }
@@ -586,7 +586,7 @@ impl Circuit for SecureAction {
 **Solution**: Verify proofs within proofs (recursive SNARKs).
 
 ```rust
-#[shade::circuit]
+#[shroud::circuit]
 pub struct RecursiveVerifier {
     #[private]
     inner_proof: Proof,
@@ -667,7 +667,7 @@ fn transfer(amount: Field) {
 
 ## Performance Tips
 
-1. **Profile Before Optimizing**: Use `shade bench` to find bottlenecks
+1. **Profile Before Optimizing**: Use `shroud bench` to find bottlenecks
 2. **Cache Repeated Operations**: Reuse hash results when possible
 3. **Choose the Right Hash**: Poseidon for ZK, SHA for interoperability
 4. **Minimize Public Inputs**: Each public input adds verification cost
@@ -684,4 +684,4 @@ fn transfer(amount: Field) {
 
 ---
 
-**Questions?** Join our [Discord](https://discord.gg/shade) or open a [GitHub Discussion](https://github.com/shadow-protocol/shade/discussions).
+**Questions?** Join our [Discord](https://discord.gg/shroud) or open a [GitHub Discussion](https://github.com/shroud-protocol/shroud/discussions).

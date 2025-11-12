@@ -1,12 +1,12 @@
-// Hello Shade - Your First Zero-Knowledge Circuit
+// Hello Shroud - Your First Zero-Knowledge Circuit
 // This example demonstrates a simple circuit that proves knowledge of a secret
 // without revealing it.
 
-use shade::prelude::*;
+use shroud::prelude::*;
 
 /// A simple circuit that proves "I know the secret to this hash"
-#[shade::circuit]
-pub struct HelloShade {
+#[shroud::circuit]
+pub struct HelloShroud {
     /// Private input: the secret (never revealed)
     #[private]
     secret: Field,
@@ -16,7 +16,7 @@ pub struct HelloShade {
     hash: Field,
 }
 
-impl Circuit for HelloShade {
+impl Circuit for HelloShroud {
     fn constraints(&self) -> Result<()> {
         // Constraint: hash must equal poseidon_hash(secret)
         let computed_hash = poseidon_hash(&[self.secret]);
@@ -27,7 +27,7 @@ impl Circuit for HelloShade {
 }
 
 fn main() {
-    println!("🔐 Hello Shade - Your First Zero-Knowledge Circuit\n");
+    println!("🔐 Hello Shroud - Your First Zero-Knowledge Circuit\n");
 
     // Step 1: Generate a secret
     let secret = Field::from(42);
@@ -40,7 +40,7 @@ fn main() {
     println!("  Hash: {}", hash);
 
     // Step 3: Create the circuit
-    let circuit = HelloShade { secret, hash };
+    let circuit = HelloShroud { secret, hash };
     println!("\nStep 3: Circuit created");
 
     // Step 4: Generate a proof
@@ -68,7 +68,7 @@ fn main() {
     println!("  4. The proof reveals NOTHING about the secret itself!");
     println!("  5. Anyone can verify the proof without learning the secret");
 
-    println!("\n✨ Welcome to zero-knowledge privacy with Shade Framework!");
+    println!("\n✨ Welcome to zero-knowledge privacy with Shroud Framework!");
 }
 
 #[cfg(test)]
@@ -80,7 +80,7 @@ mod tests {
         let secret = Field::from(12345);
         let hash = poseidon_hash(&[secret]);
 
-        let circuit = HelloShade { secret, hash };
+        let circuit = HelloShroud { secret, hash };
         let proof = circuit.prove().unwrap();
 
         assert!(proof.verify());
@@ -91,7 +91,7 @@ mod tests {
         let secret = Field::from(12345);
         let wrong_hash = Field::from(99999);
 
-        let circuit = HelloShade {
+        let circuit = HelloShroud {
             secret,
             hash: wrong_hash,
         };

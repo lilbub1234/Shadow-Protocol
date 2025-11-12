@@ -1,5 +1,5 @@
-// Shade Framework - Circuit Optimizer
-// Copyright (c) 2025 Shadow Protocol Contributors
+// Shroud Framework - Circuit Optimizer
+// Copyright (c) 2025 Shroud Protocol Contributors
 // Licensed under MIT License
 
 //! Circuit optimization passes

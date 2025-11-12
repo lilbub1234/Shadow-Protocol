@@ -1,5 +1,5 @@
-// Shade Framework - Signature Verification Gadgets
-// Copyright (c) 2025 Shadow Protocol Contributors
+// Shroud Framework - Signature Verification Gadgets
+// Copyright (c) 2025 Shroud Protocol Contributors
 // Licensed under MIT License
 
 //! Signature verification in zero-knowledge

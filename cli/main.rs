@@ -1,5 +1,5 @@
-// Shade Framework CLI
-// Copyright (c) 2025 Shadow Protocol Contributors
+// Shroud Framework CLI
+// Copyright (c) 2025 Shroud Protocol Contributors
 // Licensed under MIT License
 
 use clap::{Parser, Subcommand};
@@ -8,10 +8,10 @@ use std::path::PathBuf;
 
 #[derive(Parser)]
 #[command(
-    name = "shade",
-    about = "Shade Framework - Next-generation zero-knowledge privacy platform",
+    name = "shroud",
+    about = "Shroud Framework - Next-generation zero-knowledge privacy platform",
     version = env!("CARGO_PKG_VERSION"),
-    author = "Shadow Protocol Contributors"
+    author = "Shroud Protocol Contributors"
 )]
 struct Cli {
     #[command(subcommand)]
@@ -28,7 +28,7 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
-    /// Initialize a new Shade project
+    /// Initialize a new Shroud project
     Init {
         /// Project name
         name: String,
@@ -132,7 +132,7 @@ enum Commands {
     /// Clean build artifacts
     Clean,
 
-    /// Update Shade Framework
+    /// Update Shroud Framework
     Upgrade,
 
     /// Run diagnostics
@@ -189,7 +189,7 @@ fn cmd_init(name: &str, template: &str) -> Result<(), Box<dyn std::error::Error>
     println!("\n{}", "Project created successfully!".green());
     println!("\nNext steps:");
     println!("  cd {}", name);
-    println!("  shade build --visual");
+    println!("  shroud build --visual");
 
     Ok(())
 }
@@ -306,7 +306,7 @@ fn cmd_create(app_type: &str, config: Option<String>) -> Result<(), Box<dyn std:
 
 fn cmd_info() -> Result<(), Box<dyn std::error::Error>> {
     println!("{}", "Project Information".cyan().bold());
-    println!("Name: shade-project");
+    println!("Name: shroud-project");
     println!("Version: 0.1.0");
     println!("Circuit: private_note");
     println!("Constraints: 1,247");
@@ -360,7 +360,7 @@ fn cmd_doctor() -> Result<(), Box<dyn std::error::Error>> {
     println!("{}", "Running diagnostics...".cyan().bold());
 
     println!("\n{}", "✓ Rust toolchain".green());
-    println!("{}", "✓ Shade Framework installation".green());
+    println!("{}", "✓ Shroud Framework installation".green());
     println!("{}", "✓ Dependencies".green());
     println!("{}", "✓ Configuration".green());
 

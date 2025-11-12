@@ -1,6 +1,6 @@
 # Private Mixer Example
 
-This example demonstrates a production-ready privacy mixer built with Shade Framework. Users can deposit assets into a shared pool and withdraw them to different addresses, breaking the on-chain link between deposit and withdrawal.
+This example demonstrates a production-ready privacy mixer built with Shroud Framework. Users can deposit assets into a shared pool and withdraw them to different addresses, breaking the on-chain link between deposit and withdrawal.
 
 ## Overview
 
@@ -70,9 +70,9 @@ The withdrawal circuit proves:
 4. **No Double-Spend**: The nullifier hasn't been used before (checked on-chain)
 
 ```rust
-use shade::prelude::*;
+use shroud::prelude::*;
 
-#[shade::circuit]
+#[shroud::circuit]
 pub struct WithdrawalCircuit {
     // Private inputs
     #[private]
@@ -126,7 +126,7 @@ impl Circuit for WithdrawalCircuit {
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "@shade/verifier/Groth16Verifier.sol";
+import "@shroud/verifier/Groth16Verifier.sol";
 
 contract PrivateMixer {
     // Deposit amount (fixed for simplicity)
@@ -230,7 +230,7 @@ contract PrivateMixer {
 
 ```bash
 # User generates secrets locally (never reveal these!)
-shade mixer generate-secrets
+shroud mixer generate-secrets
 
 # Output:
 # secret: 0x4a2f3c9d8e7b1a5f6c3d9e8b7a6f5c4d3e2b1a9f8e7d6c5b4a3f2e1d0c9b8a7
@@ -240,7 +240,7 @@ shade mixer generate-secrets
 ### 2. Compute Commitment
 
 ```bash
-shade mixer commit --secret <secret>
+shroud mixer commit --secret <secret>
 
 # Output:
 # commitment: 0x7f3e9a5c8d2b6a4f1e9c7b5d3a8f6e4c2b9a7d5f3e1c9b7a5d3f1e9c7b5d3a1
@@ -250,7 +250,7 @@ shade mixer commit --secret <secret>
 
 ```bash
 # Deposit via smart contract
-shade mixer deposit \
+shroud mixer deposit \
     --commitment 0x7f3e9a5c8d2b6a4f1e9c7b5d3a8f6e4c2b9a7d5f3e1c9b7a5d3f1e9c7b5d3a1 \
     --amount 1 \
     --chain ethereum
@@ -264,7 +264,7 @@ shade mixer deposit \
 
 ```bash
 # Check current anonymity set size
-shade mixer stats
+shroud mixer stats
 
 # Output:
 # Total deposits: 127
@@ -277,7 +277,7 @@ shade mixer stats
 
 ```bash
 # Generate withdrawal proof and execute
-shade mixer withdraw \
+shroud mixer withdraw \
     --secret <secret> \
     --nullifier-secret <nullifier_secret> \
     --recipient 0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb \
@@ -348,7 +348,7 @@ Total cost per use: ~$14 (deposit + withdrawal)
 Support multiple deposit tiers (0.1, 1, 10, 100 ETH):
 
 ```rust
-#[shade::circuit]
+#[shroud::circuit]
 pub struct MultiAmountWithdrawal {
     #[public]
     amount: Field, // Add amount to public inputs
@@ -391,7 +391,7 @@ await mixer.relayWithdrawal(request, { from: relayerAddress });
 Optional selective disclosure for regulatory compliance:
 
 ```rust
-#[shade::circuit]
+#[shroud::circuit]
 pub struct ComplianceWithdrawal {
     #[public]
     compliance_key: Field, // Regulatory authority's key
@@ -407,52 +407,52 @@ pub struct ComplianceWithdrawal {
 
 ```bash
 # Run test suite
-shade test
+shroud test
 
 # Run with coverage
-shade test --coverage
+shroud test --coverage
 
 # Run specific test
-shade test test_valid_withdrawal
+shroud test test_valid_withdrawal
 
 # Run benchmarks
-shade bench
+shroud bench
 
 # Fuzz test
-shade fuzz --duration 60s
+shroud fuzz --duration 60s
 ```
 
 ## Deployment
 
 ```bash
 # Deploy to testnet
-shade deploy --network goerli
+shroud deploy --network goerli
 
 # Deploy to mainnet (requires confirmation)
-shade deploy --network mainnet
+shroud deploy --network mainnet
 
 # Verify contracts on Etherscan
-shade verify --network mainnet
+shroud verify --network mainnet
 ```
 
 ## Monitoring
 
 ```bash
 # Watch deposit events
-shade mixer watch deposits
+shroud mixer watch deposits
 
 # Watch withdrawal events
-shade mixer watch withdrawals
+shroud mixer watch withdrawals
 
 # Check tree state
-shade mixer tree-status
+shroud mixer tree-status
 
 # Audit mode (track all deposits/withdrawals)
-shade mixer audit
+shroud mixer audit
 ```
 
 ---
 
-This example demonstrates the power of Shade Framework: a production-ready privacy mixer built with minimal code, comprehensive testing, and multi-chain deployment—all from a visual interface or simple Rust code.
+This example demonstrates the power of Shroud Framework: a production-ready privacy mixer built with minimal code, comprehensive testing, and multi-chain deployment—all from a visual interface or simple Rust code.
 
-**Build privacy apps that matter. Use Shade Framework.**
+**Build privacy apps that matter. Use Shroud Framework.**

@@ -1,5 +1,5 @@
-// Shade Framework - Proof Aggregation & Recursion
-// Copyright (c) 2025 Shadow Protocol Contributors
+// Shroud Framework - Proof Aggregation & Recursion
+// Copyright (c) 2025 Shroud Protocol Contributors
 // Licensed under MIT License
 
 //! Proof aggregation and recursive verification

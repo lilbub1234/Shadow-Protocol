@@ -1,5 +1,5 @@
-// Shade Framework - Benchmarking System
-// Copyright (c) 2025 Shadow Protocol Contributors
+// Shroud Framework - Benchmarking System
+// Copyright (c) 2025 Shroud Protocol Contributors
 // Licensed under MIT License
 
 //! Performance benchmarking for ZK circuits

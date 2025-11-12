@@ -1,5 +1,5 @@
-// Shade Framework - Hardware-Accelerated Precompiles
-// Copyright (c) 2025 Shadow Protocol Contributors
+// Shroud Framework - Hardware-Accelerated Precompiles
+// Copyright (c) 2025 Shroud Protocol Contributors
 // Licensed under MIT License
 
 //! Hardware-accelerated precompiles for performance-critical operations
@@ -494,7 +494,7 @@ mod tests {
 
     #[test]
     fn test_blake3_hash() {
-        let input = b"Hello, Shade!";
+        let input = b"Hello, Shroud!";
 
         let registry = PrecompileRegistry::new();
         let result = registry.execute(Operation::Blake3, input).unwrap();

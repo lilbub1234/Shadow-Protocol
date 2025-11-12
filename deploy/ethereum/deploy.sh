@@ -1,11 +1,11 @@
 #!/bin/bash
-# Shade Framework - Ethereum Deployment Script
-# Copyright (c) 2025 Shadow Protocol Contributors
+# Shroud Framework - Ethereum Deployment Script
+# Copyright (c) 2025 Shroud Protocol Contributors
 
 set -e
 
 echo "========================================="
-echo "Shade Framework - Ethereum Deployment"
+echo "Shroud Framework - Ethereum Deployment"
 echo "========================================="
 
 # Configuration

@@ -1,5 +1,5 @@
-// Shade Framework - Polynomial Commitment Schemes
-// Copyright (c) 2025 Shadow Protocol Contributors
+// Shroud Framework - Polynomial Commitment Schemes
+// Copyright (c) 2025 Shroud Protocol Contributors
 // Licensed under MIT License
 
 //! Polynomial commitment schemes for zero-knowledge proofs

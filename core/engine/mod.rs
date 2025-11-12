@@ -1,5 +1,5 @@
-// Shade Framework - Core Proving Engine
-// Copyright (c) 2025 Shadow Protocol Contributors
+// Shroud Framework - Core Proving Engine
+// Copyright (c) 2025 Shroud Protocol Contributors
 // Licensed under MIT License
 
 //! Core proving engine that orchestrates circuit compilation,
@@ -57,7 +57,7 @@ impl ProvingEngine {
     }
 
     /// Compile a circuit with optimization
-    pub async fn compile_circuit(&mut self, circuit: Circuit) -> Result<CompiledCircuit, ShadeError> {
+    pub async fn compile_circuit(&mut self, circuit: Circuit) -> Result<CompiledCircuit, ShroudError> {
         // Check cache first
         if let Some(compiled) = self.circuit_cache.get(&circuit.id()) {
             return Ok(compiled.clone());
@@ -99,11 +99,11 @@ impl ProvingEngine {
         circuit: &CompiledCircuit,
         witness: Witness,
         requirements: ProofRequirements,
-    ) -> Result<Proof, ShadeError> {
+    ) -> Result<Proof, ShroudError> {
         // Select optimal backend
         let backend_type = self.select_backend(&requirements);
         let backend = self.backends.get(&backend_type)
-            .ok_or(ShadeError::BackendNotFound(backend_type))?;
+            .ok_or(ShroudError::BackendNotFound(backend_type))?;
 
         // Start proving metrics
         let start = std::time::Instant::now();
@@ -122,9 +122,9 @@ impl ProvingEngine {
         &self,
         proof: &Proof,
         public_inputs: &[Field],
-    ) -> Result<bool, ShadeError> {
+    ) -> Result<bool, ShroudError> {
         let backend = self.backends.get(&proof.backend_type)
-            .ok_or(ShadeError::BackendNotFound(proof.backend_type))?;
+            .ok_or(ShroudError::BackendNotFound(proof.backend_type))?;
 
         let start = std::time::Instant::now();
         let valid = backend.verify(proof, public_inputs).await?;
@@ -135,7 +135,7 @@ impl ProvingEngine {
     }
 
     /// Optimize constraint system
-    fn optimize_constraints(&self, mut cs: ConstraintSystem) -> Result<ConstraintSystem, ShadeError> {
+    fn optimize_constraints(&self, mut cs: ConstraintSystem) -> Result<ConstraintSystem, ShroudError> {
         let original_size = cs.constraints.len();
 
         // Apply optimization passes
@@ -202,14 +202,14 @@ pub trait ProofBackend: Send + Sync {
         &self,
         circuit: &CompiledCircuit,
         witness: Witness,
-    ) -> Result<Proof, ShadeError>;
+    ) -> Result<Proof, ShroudError>;
 
     /// Verify a proof
     async fn verify(
         &self,
         proof: &Proof,
         public_inputs: &[Field],
-    ) -> Result<bool, ShadeError>;
+    ) -> Result<bool, ShroudError>;
 
     /// Get backend capabilities
     fn capabilities(&self) -> BackendCapabilities;
@@ -388,9 +388,9 @@ fn avg_duration_verification(metrics: &[VerificationMetric]) -> std::time::Durat
     total / metrics.len() as u32
 }
 
-/// Shade Framework errors
+/// Shroud Framework errors
 #[derive(Debug)]
-pub enum ShadeError {
+pub enum ShroudError {
     CircuitError(String),
     ConstraintNotSatisfied(String),
     BackendNotFound(BackendType),
@@ -401,24 +401,24 @@ pub enum ShadeError {
     OptimizationFailed(String),
 }
 
-impl std::fmt::Display for ShadeError {
+impl std::fmt::Display for ShroudError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            ShadeError::CircuitError(msg) => write!(f, "Circuit error: {}", msg),
-            ShadeError::ConstraintNotSatisfied(msg) => write!(f, "Constraint not satisfied: {}", msg),
-            ShadeError::BackendNotFound(backend) => write!(f, "Backend not found: {:?}", backend),
-            ShadeError::CompilationFailed(msg) => write!(f, "Compilation failed: {}", msg),
-            ShadeError::ProvingFailed(msg) => write!(f, "Proving failed: {}", msg),
-            ShadeError::VerificationFailed(msg) => write!(f, "Verification failed: {}", msg),
-            ShadeError::InvalidWitness(msg) => write!(f, "Invalid witness: {}", msg),
-            ShadeError::OptimizationFailed(msg) => write!(f, "Optimization failed: {}", msg),
+            ShroudError::CircuitError(msg) => write!(f, "Circuit error: {}", msg),
+            ShroudError::ConstraintNotSatisfied(msg) => write!(f, "Constraint not satisfied: {}", msg),
+            ShroudError::BackendNotFound(backend) => write!(f, "Backend not found: {:?}", backend),
+            ShroudError::CompilationFailed(msg) => write!(f, "Compilation failed: {}", msg),
+            ShroudError::ProvingFailed(msg) => write!(f, "Proving failed: {}", msg),
+            ShroudError::VerificationFailed(msg) => write!(f, "Verification failed: {}", msg),
+            ShroudError::InvalidWitness(msg) => write!(f, "Invalid witness: {}", msg),
+            ShroudError::OptimizationFailed(msg) => write!(f, "Optimization failed: {}", msg),
         }
     }
 }
 
-impl std::error::Error for ShadeError {}
+impl std::error::Error for ShroudError {}
 
-type Result<T, E = ShadeError> = std::result::Result<T, E>;
+type Result<T, E = ShroudError> = std::result::Result<T, E>;
 
 // Backend implementations (stubs - would be full implementations)
 struct Groth16Backend;

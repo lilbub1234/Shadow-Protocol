@@ -1,6 +1,6 @@
-# Contributing to Shade Framework
+# Contributing to Shroud Framework
 
-Thank you for your interest in contributing to Shade Framework! We're building the future of privacy infrastructure together, and your contributions make that possible.
+Thank you for your interest in contributing to Shroud Framework! We're building the future of privacy infrastructure together, and your contributions make that possible.
 
 ## Code of Conduct
 
@@ -8,16 +8,16 @@ We are committed to providing a welcoming and inclusive environment. All contrib
 
 ## How to Contribute
 
-There are many ways to contribute to Shade Framework:
+There are many ways to contribute to Shroud Framework:
 
 ### 1. Report Bugs
-- Search [existing issues](https://github.com/shadow-protocol/shade/issues) to avoid duplicates
+- Search [existing issues](https://github.com/shroud-protocol/shroud/issues) to avoid duplicates
 - Use the bug report template
 - Include reproduction steps, expected behavior, and actual behavior
-- Provide system information (OS, Shade version, etc.)
+- Provide system information (OS, Shroud version, etc.)
 
 ### 2. Suggest Features
-- Open a [feature request](https://github.com/shadow-protocol/shade/issues/new?template=feature_request.md)
+- Open a [feature request](https://github.com/shroud-protocol/shroud/issues/new?template=feature_request.md)
 - Describe the problem you're trying to solve
 - Explain your proposed solution
 - Consider alternatives and trade-offs
@@ -56,8 +56,8 @@ There are many ways to contribute to Shade Framework:
 
 ### Clone the Repository
 ```bash
-git clone https://github.com/shadow-protocol/shade.git
-cd shade
+git clone https://github.com/shroud-protocol/shroud.git
+cd shroud
 ```
 
 ### Install Dependencies
@@ -84,7 +84,7 @@ pip install -e .
 cargo test --all
 
 # Specific crate
-cargo test -p shade-core
+cargo test -p shroud-core
 
 # With coverage
 cargo tarpaulin --out Html --output-dir coverage
@@ -103,7 +103,7 @@ npm run dev
 
 ### Run CLI
 ```bash
-cargo run --bin shade -- --help
+cargo run --bin shroud -- --help
 ```
 
 ## Contribution Workflow
@@ -212,7 +212,7 @@ git push origin feature/your-feature-name
 - Request re-review when ready
 
 ### 9. Celebrate!
-Once your PR is merged, you're officially a Shade Framework contributor! 🎉
+Once your PR is merged, you're officially a Shroud Framework contributor! 🎉
 
 ## Coding Standards
 
@@ -501,7 +501,7 @@ We follow [Semantic Versioning](https://semver.org/):
 ## Community
 
 ### Get Help
-- **Discord**: [discord.gg/shade](https://discord.gg/shade)
+- **Discord**: [discord.gg/shroud](https://discord.gg/shroud)
 - **Forum**: [forum.shadeframework.io](https://forum.shadeframework.io)
 - **GitHub Discussions**: Ask questions
 
@@ -517,10 +517,10 @@ We follow [Semantic Versioning](https://semver.org/):
 
 ## License
 
-By contributing to Shade Framework, you agree that your contributions will be licensed under the [MIT License](./LICENSE).
+By contributing to Shroud Framework, you agree that your contributions will be licensed under the [MIT License](./LICENSE).
 
 ---
 
-**Thank you for contributing to Shade Framework!**
+**Thank you for contributing to Shroud Framework!**
 
 Together, we're building infrastructure that makes privacy accessible to everyone. Your contributions matter.

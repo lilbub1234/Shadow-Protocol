@@ -1,6 +1,6 @@
 # Security Policy
 
-Shade Framework is cryptographic infrastructure for privacy-preserving applications. Security is our highest priority.
+Shroud Framework is cryptographic infrastructure for privacy-preserving applications. Security is our highest priority.
 
 ## Reporting a Vulnerability
 
@@ -60,7 +60,7 @@ Rewards are NOT for:
 ### Scope
 
 **In Scope**:
-- Shade Framework core (`shade-framework` repo)
+- Shroud Framework core (`shroud-framework` repo)
 - Visual builder (web interface and backend)
 - SDK implementations (Rust, TypeScript, Python)
 - CLI tools
@@ -157,7 +157,7 @@ Rewards are NOT for:
 
 We publish security advisories for all vulnerabilities:
 
-- **GitHub Security Advisories**: [View](https://github.com/shadow-protocol/shade/security/advisories)
+- **GitHub Security Advisories**: [View](https://github.com/shroud-protocol/shroud/security/advisories)
 - **Email Notifications**: Subscribe at security@shadeframework.io
 - **RSS Feed**: [Subscribe](https://shadeframework.io/security/feed.xml)
 
@@ -200,7 +200,7 @@ We maintain a public record of past vulnerabilities:
 
 ## Security Best Practices for Users
 
-### When Using Shade Framework
+### When Using Shroud Framework
 
 **Protect Your Secrets**
 - Never commit secrets to version control
@@ -229,7 +229,7 @@ We maintain a public record of past vulnerabilities:
 - Monitor for anomalies
 - Have emergency pause mechanisms
 
-### When Building with Shade
+### When Building with Shroud
 
 **Circuit Design**
 - Use well-tested gadgets
@@ -295,6 +295,6 @@ We thank the following security researchers for their responsible disclosure:
 
 **Security is a journey, not a destination.**
 
-We continuously improve Shade Framework's security. If you have suggestions for improving our security posture, please reach out.
+We continuously improve Shroud Framework's security. If you have suggestions for improving our security posture, please reach out.
 
-Thank you for helping keep Shade Framework and our users safe.
+Thank you for helping keep Shroud Framework and our users safe.

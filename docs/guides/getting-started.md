@@ -1,12 +1,12 @@
-# Getting Started with Shade Framework
+# Getting Started with Shroud Framework
 
-Welcome to Shade Framework! This guide will take you from zero to your first privacy-preserving application in under 10 minutes.
+Welcome to Shroud Framework! This guide will take you from zero to your first privacy-preserving application in under 10 minutes.
 
 ## Installation
 
 ### Prerequisites
 
-Shade Framework works on all major platforms:
+Shroud Framework works on all major platforms:
 - **Linux**: Ubuntu 20.04+, Arch, Fedora
 - **macOS**: 11.0+ (Big Sur and later)
 - **Windows**: Windows 10+ (via WSL2 recommended)
@@ -22,7 +22,7 @@ curl -fsSL https://get.shadeframework.io | sh
 
 This will:
 - Detect your platform
-- Install Shade CLI
+- Install Shroud CLI
 - Set up PATH configuration
 - Download core libraries
 - Verify installation
@@ -31,24 +31,24 @@ This will:
 
 **Rust (Cargo)**
 ```bash
-cargo install shade-cli
+cargo install shroud-cli
 ```
 
 **Node.js (npm)**
 ```bash
-npm install -g @shade/cli
+npm install -g @shroud/cli
 ```
 
 **Python (pip)**
 ```bash
-pip install shade-framework
+pip install shroud-framework
 ```
 
 ### Verify Installation
 
 ```bash
-shade --version
-# Output: Shade Framework v0.1.0
+shroud --version
+# Output: Shroud Framework v0.1.0
 ```
 
 ## Your First Privacy App: Private Note
@@ -59,10 +59,10 @@ Let's build a simple private note application where users can prove they know th
 
 1. **Launch the Visual Builder**
 ```bash
-shade build --visual
+shroud build --visual
 ```
 
-This opens the Shade Visual Builder in your browser at `http://localhost:3000`.
+This opens the Shroud Visual Builder in your browser at `http://localhost:3000`.
 
 2. **Create a New Project**
    - Click "New Project"
@@ -109,7 +109,7 @@ You now have production-ready code!
 
 1. **Describe What You Want**
 ```bash
-shade generate
+shroud generate
 ```
 
 When prompted, enter:
@@ -148,25 +148,25 @@ Proceed with generation? (y/n)
 # AI generates complete implementation
 
 # Test the circuit
-shade test
+shroud test
 
 # Deploy if desired
-shade deploy --chain ethereum
+shroud deploy --chain ethereum
 ```
 
 ### Method 3: Code (For Developers)
 
 1. **Initialize Project**
 ```bash
-shade init private-note --template basic
+shroud init private-note --template basic
 cd private-note
 ```
 
 2. **Edit Circuit** (`src/circuit.rs`)
 ```rust
-use shade::prelude::*;
+use shroud::prelude::*;
 
-#[shade::circuit]
+#[shroud::circuit]
 pub struct PrivateNote {
     // Private input
     #[private]
@@ -196,7 +196,7 @@ impl Circuit for PrivateNote {
 
 3. **Write Tests** (`tests/circuit_test.rs`)
 ```rust
-use shade::testing::*;
+use shroud::testing::*;
 
 #[test]
 fn test_valid_note() {
@@ -232,7 +232,7 @@ fn test_note_too_short() {
 
 4. **Run Tests**
 ```bash
-shade test
+shroud test
 ```
 
 Output:
@@ -247,7 +247,7 @@ Circuit complexity: 1,247 constraints
 
 5. **Build for Production**
 ```bash
-shade build --release --optimize
+shroud build --release --optimize
 ```
 
 Output:
@@ -269,7 +269,7 @@ Build complete: ./build/private_note
 ### Private Voting System
 
 ```bash
-shade create voting --type anonymous --eligibility token-holder
+shroud create voting --type anonymous --eligibility token-holder
 ```
 
 This generates a complete voting application with:
@@ -281,7 +281,7 @@ This generates a complete voting application with:
 ### Token Mixer
 
 ```bash
-shade create mixer --asset ETH --anonymity-set 1000
+shroud create mixer --asset ETH --anonymity-set 1000
 ```
 
 This creates a privacy mixer with:
@@ -293,7 +293,7 @@ This creates a privacy mixer with:
 ### Credential System
 
 ```bash
-shade create credentials --schema age-verification
+shroud create credentials --schema age-verification
 ```
 
 This builds a credential issuance and verification system:
@@ -302,7 +302,7 @@ This builds a credential issuance and verification system:
 - Revocation support
 - Privacy-preserving verification
 
-## Understanding Shade Concepts
+## Understanding Shroud Concepts
 
 ### Circuits
 A **circuit** is a mathematical representation of a computation. It consists of:
@@ -335,10 +335,10 @@ Proof: Convinces verifier this is true without revealing x
 
 ### Project Structure
 
-A Shade project looks like:
+A Shroud project looks like:
 ```
 private-note/
-├── shade.toml           # Project configuration
+├── shroud.toml           # Project configuration
 ├── src/
 │   ├── circuit.rs       # Main circuit definition
 │   └── lib.rs           # Library exports
@@ -349,7 +349,7 @@ private-note/
 └── build/               # Build artifacts
 ```
 
-### shade.toml
+### shroud.toml
 
 ```toml
 [project]
@@ -392,47 +392,47 @@ cache_enabled = true
 
 ### Project Management
 ```bash
-shade init <name>           # Create new project
-shade build                 # Build project
-shade build --visual        # Open visual builder
-shade clean                 # Clean build artifacts
+shroud init <name>           # Create new project
+shroud build                 # Build project
+shroud build --visual        # Open visual builder
+shroud clean                 # Clean build artifacts
 ```
 
 ### Development
 ```bash
-shade test                  # Run tests
-shade test --verbose        # Detailed output
-shade bench                 # Run benchmarks
-shade optimize              # Analyze and suggest optimizations
+shroud test                  # Run tests
+shroud test --verbose        # Detailed output
+shroud bench                 # Run benchmarks
+shroud optimize              # Analyze and suggest optimizations
 ```
 
 ### Proof Operations
 ```bash
-shade prove                 # Generate proof
-shade verify <proof>        # Verify proof
-shade export-verifier       # Export verifier code
+shroud prove                 # Generate proof
+shroud verify <proof>        # Verify proof
+shroud export-verifier       # Export verifier code
 ```
 
 ### Deployment
 ```bash
-shade deploy                # Deploy to configured chains
-shade deploy --chain <name> # Deploy to specific chain
-shade deploy --testnet      # Deploy to testnets
+shroud deploy                # Deploy to configured chains
+shroud deploy --chain <name> # Deploy to specific chain
+shroud deploy --testnet      # Deploy to testnets
 ```
 
 ### AI Assistant
 ```bash
-shade generate              # AI-assisted generation
-shade suggest               # Get optimization suggestions
-shade explain <circuit>     # Explain circuit design
+shroud generate              # AI-assisted generation
+shroud suggest               # Get optimization suggestions
+shroud explain <circuit>     # Explain circuit design
 ```
 
 ### Utilities
 ```bash
-shade info                  # Show project info
-shade stats                 # Circuit statistics
-shade visualize             # Visualize circuit graph
-shade upgrade               # Update Shade Framework
+shroud info                  # Show project info
+shroud stats                 # Circuit statistics
+shroud visualize             # Visualize circuit graph
+shroud upgrade               # Update Shroud Framework
 ```
 
 ## Getting Help
@@ -443,15 +443,15 @@ shade upgrade               # Update Shade Framework
 - **Examples**: Browse the [examples](../../examples) directory
 
 ### Community
-- **Discord**: [discord.gg/shade](https://discord.gg/shade)
+- **Discord**: [discord.gg/shroud](https://discord.gg/shroud)
 - **Forum**: [forum.shadeframework.io](https://forum.shadeframework.io)
 - **GitHub Discussions**: Ask questions and share projects
 
 ### Built-in Help
 ```bash
-shade help                  # List all commands
-shade help <command>        # Detailed command help
-shade doctor                # Diagnose installation issues
+shroud help                  # List all commands
+shroud help <command>        # Detailed command help
+shroud doctor                # Diagnose installation issues
 ```
 
 ## Troubleshooting
@@ -461,13 +461,13 @@ shade doctor                # Diagnose installation issues
 **Error**: `Failed to compile circuit`
 ```bash
 # Check circuit syntax
-shade check
+shroud check
 
 # Verbose build output
-shade build --verbose
+shroud build --verbose
 
 # Clean and rebuild
-shade clean && shade build
+shroud clean && shroud build
 ```
 
 ### Proof Generation Fails
@@ -475,10 +475,10 @@ shade clean && shade build
 **Error**: `Constraint not satisfied`
 ```bash
 # Debug mode shows which constraint failed
-shade prove --debug
+shroud prove --debug
 
 # Visualize constraint dependency graph
-shade visualize --constraints
+shroud visualize --constraints
 ```
 
 ### Performance Issues
@@ -486,13 +486,13 @@ shade visualize --constraints
 **Slow proof generation**
 ```bash
 # Enable optimizations
-shade build --optimize --release
+shroud build --optimize --release
 
 # Use parallel proving
-shade prove --parallel
+shroud prove --parallel
 
 # Profile hot spots
-shade profile
+shroud profile
 ```
 
 ## What's Next?
@@ -503,6 +503,6 @@ Now that you've built your first privacy app, explore:
 2. **[Circuit Design Patterns](./circuit-patterns.md)** - Learn best practices
 3. **[zkVM Programming](./zkvm-programming.md)** - Build with universal computation
 4. **[Privacy App Templates](./templates.md)** - Explore pre-built applications
-5. **[Plugin Development](./plugin-development.md)** - Extend Shade Framework
+5. **[Plugin Development](./plugin-development.md)** - Extend Shroud Framework
 
-Welcome to the Shade community. Let's build a more private future together.
+Welcome to the Shroud community. Let's build a more private future together.
